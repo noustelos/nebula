@@ -39,8 +39,9 @@ body {
 		radial-gradient(circle at 20% 20%, rgba(173, 224, 255, 0.08), transparent 26%),
 		linear-gradient(180deg, #050816 0%, #040711 48%, #050816 100%);
 	color: var(--text);
-	font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
-	line-height: 1.5;
+	font-family: "Nunito Sans", Arial, Helvetica, sans-serif;
+	font-size: 15px;
+	line-height: 1.55;
 }
 
 body::before {
@@ -114,10 +115,10 @@ canvas {
 }
 
 .brand-mark {
-	font-family: "Syne", "Space Grotesk", sans-serif;
-	font-size: 1.15rem;
+	font-family: "Manrope", "Nunito Sans", sans-serif;
+	font-size: 1.02rem;
 	font-weight: 800;
-	letter-spacing: 0.08em;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	color: var(--accent-strong);
 	text-shadow: 0 0 24px rgba(158, 209, 255, 0.16);
@@ -134,8 +135,8 @@ canvas {
 .site-nav a {
 	padding: 10px 14px;
 	border-radius: 999px;
-	font-size: 0.84rem;
-	letter-spacing: 0.08em;
+	font-size: 0.78rem;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	color: var(--muted);
 	transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
@@ -261,8 +262,8 @@ canvas {
 	align-items: center;
 	gap: 10px;
 	margin: 0 0 18px;
-	font-size: 0.76rem;
-	letter-spacing: 0.18em;
+	font-size: 0.7rem;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	color: rgba(210, 231, 255, 0.66);
 }
@@ -283,16 +284,16 @@ canvas {
 .support-copy h2,
 .signal-card h2 {
 	margin: 0;
-	font-family: "Syne", "Space Grotesk", sans-serif;
+	font-family: "Manrope", "Nunito Sans", sans-serif;
 	font-weight: 800;
-	line-height: 0.95;
+	line-height: 0.98;
 	letter-spacing: -0.04em;
 	text-wrap: balance;
 }
 
 .hero-copy h1,
 .page-hero h1 {
-	font-size: clamp(3.5rem, 9vw, 7.2rem);
+	font-size: clamp(3rem, 8.2vw, 6rem);
 	background: linear-gradient(120deg, #ffffff 6%, #d5ebff 28%, #91c8ff 50%, #a4a9ff 66%, #ffe4c2 90%);
 	background-size: 220% 220%;
 	background-clip: text;
@@ -317,7 +318,7 @@ canvas {
 .faq-card p,
 .intro-strip p {
 	color: var(--muted);
-	font-size: clamp(1rem, 1.2vw, 1.1rem);
+	font-size: clamp(0.96rem, 1.08vw, 1.02rem);
 }
 
 .hero-actions {
@@ -335,9 +336,9 @@ canvas {
 	padding: 0 22px;
 	border-radius: 999px;
 	border: 1px solid rgba(255, 255, 255, 0.12);
-	font-size: 0.86rem;
+	font-size: 0.8rem;
 	font-weight: 700;
-	letter-spacing: 0.08em;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
@@ -478,9 +479,9 @@ canvas {
 .detail-index {
 	display: block;
 	margin-bottom: 10px;
-	font-size: 0.8rem;
+	font-size: 0.74rem;
 	font-weight: 700;
-	letter-spacing: 0.16em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: rgba(212, 228, 255, 0.74);
 }
@@ -491,7 +492,7 @@ canvas {
 .mini-list li,
 .detail-list li {
 	color: var(--muted-soft);
-	font-size: 0.94rem;
+	font-size: 0.88rem;
 }
 
 .hero-side {
@@ -621,8 +622,8 @@ canvas {
 
 .stage-node strong {
 	display: block;
-	font-family: "Syne", "Space Grotesk", sans-serif;
-	font-size: 1.24rem;
+	font-family: "Manrope", "Nunito Sans", sans-serif;
+	font-size: 1.08rem;
 	line-height: 1.08;
 	letter-spacing: -0.03em;
 	margin-bottom: 10px;
@@ -630,7 +631,7 @@ canvas {
 
 .stage-node p {
 	margin: 0;
-	font-size: 0.92rem;
+	font-size: 0.86rem;
 	color: var(--muted-soft);
 }
 
@@ -646,14 +647,14 @@ canvas {
 	background: rgba(255, 255, 255, 0.045);
 	border: 1px solid rgba(200, 224, 255, 0.14);
 	color: rgba(223, 235, 255, 0.82);
-	font-size: 0.76rem;
-	letter-spacing: 0.08em;
+	font-size: 0.7rem;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .signal-card h2 {
-	font-size: clamp(1.9rem, 3vw, 3rem);
+	font-size: clamp(1.7rem, 2.6vw, 2.55rem);
 	margin-bottom: 16px;
 }
 
@@ -723,8 +724,8 @@ canvas {
 	border: 1px solid rgba(195, 220, 255, 0.14);
 	background: rgba(255, 255, 255, 0.025);
 	color: var(--muted);
-	font-size: 0.78rem;
-	letter-spacing: 0.08em;
+	font-size: 0.72rem;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 }
 
@@ -772,7 +773,7 @@ canvas {
 .support-copy h2,
 .cta-section h2,
 .page-hero .page-intro-title {
-	font-size: clamp(2.2rem, 4.6vw, 4.5rem);
+	font-size: clamp(1.95rem, 4vw, 3.8rem);
 }
 
 .compact-heading {
@@ -803,8 +804,8 @@ canvas {
 .detail-card h3,
 .faq-card h3 {
 	margin: 0 0 12px;
-	font-size: 1.2rem;
-	line-height: 1.1;
+	font-size: 1.08rem;
+	line-height: 1.2;
 }
 
 .service-card ul {
@@ -912,10 +913,10 @@ canvas {
 }
 
 .gateway-title {
-	font-family: "Syne", "Space Grotesk", sans-serif;
-	font-size: clamp(2.1rem, 6vw, 5.4rem);
+	font-family: "Manrope", "Nunito Sans", sans-serif;
+	font-size: clamp(1.8rem, 5.1vw, 4.4rem);
 	font-weight: 800;
-	line-height: 0.95;
+	line-height: 0.98;
 	letter-spacing: -0.03em;
 	background: linear-gradient(90deg, rgba(255, 255, 255, 0.86), rgba(207, 230, 255, 0.68), rgba(255, 224, 189, 0.72));
 	background-clip: text;
@@ -947,8 +948,8 @@ canvas {
 
 .gateway-sub {
 	color: rgba(200, 222, 255, 0.72);
-	font-size: 0.86rem;
-	letter-spacing: 0.08em;
+	font-size: 0.8rem;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	transition-delay: 0.08s;
 }
@@ -957,7 +958,7 @@ canvas {
 	margin-top: 10px;
 	max-width: 58ch;
 	color: rgba(215, 230, 255, 0.52);
-	font-size: 0.95rem;
+	font-size: 0.9rem;
 	line-height: 1.65;
 	transition-delay: 0.18s;
 }
@@ -1124,8 +1125,8 @@ canvas {
 }
 
 .field label {
-	font-size: 0.82rem;
-	letter-spacing: 0.08em;
+	font-size: 0.74rem;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
 	color: rgba(216, 231, 255, 0.64);
 }
