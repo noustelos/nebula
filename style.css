@@ -909,6 +909,10 @@ canvas {
 	display: none;
 }
 
+.gateway-summary::marker {
+	content: "";
+}
+
 .gateway-summary:focus-visible {
 	outline: none;
 }
@@ -1120,6 +1124,31 @@ canvas {
 
 .service-filter-strip strong {
 	color: var(--accent-strong);
+}
+
+.service-filter-close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 999px;
+	border: 1px solid rgba(195, 220, 255, 0.18);
+	background: rgba(255, 255, 255, 0.04);
+	color: var(--accent-strong);
+	font-family: "Manrope", "Nunito Sans", sans-serif;
+	font-size: 1rem;
+	font-weight: 800;
+	line-height: 1;
+	transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.service-filter-close:hover,
+.service-filter-close:focus-visible {
+	transform: translateY(-2px);
+	border-color: rgba(205, 229, 255, 0.3);
+	background: rgba(255, 255, 255, 0.08);
+	outline: none;
 }
 
 .page-hero .page-intro-title {
