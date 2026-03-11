@@ -87,7 +87,7 @@ perspective:1200px;
 	display:flex;
 	justify-content:center;
 	align-items:center;
-	gap:120px;
+	gap:72px;
 	flex-wrap:wrap;
 }
 
@@ -95,8 +95,8 @@ perspective:1200px;
 
 position:relative;
 
-width:225px;
-height:390px;
+width:320px;
+height:190px;
 
 overflow:hidden;
 
@@ -220,13 +220,13 @@ text-shadow:0 1px 10px rgba(0,0,0,0.42);
 
 .badge-title{
 
-font-size:14px;
+font-size:13px;
 letter-spacing:1px;
 font-weight:700;
 text-align:center;
 line-height:1.18;
 color:#ffffff;
-padding:0 14px;
+padding:0 20px;
 opacity:.95;
 
 }
@@ -234,7 +234,7 @@ opacity:.95;
 .badge-label{
 
 margin-top:8px;
-font-size:26px;
+font-size:23px;
 opacity:1;
 letter-spacing:2.2px;
 font-weight:700;
@@ -356,8 +356,8 @@ position:relative;
 	}
 
 	.badge-button {
-		width: min(78vw, 290px);
-		height: min(60vh, 390px);
+		width: min(88vw, 320px);
+		height: min(32vh, 190px);
 		border-radius: 14px;
 	}
 
@@ -367,7 +367,7 @@ position:relative;
 	}
 
 	.badge-label {
-		font-size: clamp(1.05rem, 6.2vw, 1.55rem);
+		font-size: clamp(1rem, 5.8vw, 1.35rem);
 		letter-spacing: 1.3px;
 	}
 
@@ -400,8 +400,8 @@ position:relative;
 	}
 
 	.badge-button {
-		width: min(84vw, 320px);
-		height: min(56vh, 360px);
+		width: min(90vw, 320px);
+		height: min(30vh, 180px);
 	}
 
 	.badge-label {
