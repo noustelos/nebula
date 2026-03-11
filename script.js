@@ -35,6 +35,13 @@ const orbState = {
 	y: window.innerHeight * 0.5
 };
 
+const cardNodes = Array.from(document.querySelectorAll(".badge-button"));
+const orbPassState = {
+	nextSwapAt: 0,
+	cardIndex: 0,
+	jitterSeed: Math.random() * Math.PI * 2
+};
+
 camera.position.z = 5;
 scene.fog = new THREE.FogExp2(0x000000, 0.0015);
 
@@ -44,7 +51,7 @@ keyLight.position.set(20, 30, 20);
 scene.add(ambientLight, keyLight);
 
 const galaxyGeometry = new THREE.BufferGeometry();
-const starCount = 6000;
+const starCount = 4900;
 const positions = new Float32Array(starCount * 3);
 const intensities = new Float32Array(starCount);
 const sizes = new Float32Array(starCount);
@@ -54,8 +61,8 @@ for (let i = 0; i < starCount; i++) {
 	positions[i3] = (Math.random() - 0.5) * 800;
 	positions[i3 + 1] = (Math.random() - 0.5) * 800;
 	positions[i3 + 2] = (Math.random() - 0.5) * 800;
-	intensities[i] = 0.35 + Math.random() * 0.75;
-	sizes[i] = 1.0 + Math.random() * 2.6;
+	intensities[i] = 0.45 + Math.random() * 0.95;
+	sizes[i] = 1.4 + Math.random() * 3.6;
 }
 
 galaxyGeometry.setAttribute(
@@ -100,9 +107,9 @@ const galaxyMaterial = new THREE.ShaderMaterial({
 		if (d > 0.5) discard;
 
 		float core = smoothstep(0.2, 0.0, d);
-		float halo = smoothstep(0.5, 0.0, d) * 0.65;
+		float halo = smoothstep(0.5, 0.0, d) * 0.95;
 		float twinkle = 0.82 + 0.18 * sin(time * (2.2 + vIntensity * 2.4));
-		float alpha = (core + halo) * vIntensity * twinkle;
+		float alpha = (core + halo) * vIntensity * twinkle * 1.22;
 		vec3 color = mix(vec3(0.68, 0.82, 1.0), vec3(1.0, 1.0, 1.0), vIntensity);
 
 		gl_FragColor = vec4(color, alpha);
@@ -130,6 +137,8 @@ void main() {
 const nebulaFragmentShader = `
 varying vec2 vUv;
 uniform float time;
+uniform vec2 orbUv;
+uniform float orbBoost;
 
 float noise(vec2 p){
 	return sin(p.x)*sin(p.y);
@@ -138,7 +147,7 @@ float noise(vec2 p){
 void main(){
 	vec2 uv = vUv;
 	vec2 centered = uv - 0.5;
-	uv += centered * dot(centered, centered) * 0.22;
+	uv += centered * dot(centered, centered) * 0.16;
 
 	float n =
 		noise(uv*10.0 + time*0.2) +
@@ -147,10 +156,17 @@ void main(){
 	vec3 color =
 		vec3(0.2,0.1,0.6) +
 		n * vec3(0.3,0.2,0.8);
+	color *= 0.9;
+
+	float orbDist = distance(vUv, orbUv);
+	float orbLight = smoothstep(0.38, 0.0, orbDist) * orbBoost;
+	color += vec3(0.14, 0.22, 0.38) * orbLight;
 
 	float edgeFade = 1.0 - smoothstep(0.58, 0.98, distance(vUv, vec2(0.5)));
 	float imaxVignette = 1.0 - smoothstep(0.45, 0.98, distance(vUv, vec2(0.5)));
-	gl_FragColor = vec4(color, (0.55 * edgeFade) + (0.16 * imaxVignette));
+	float baseAlpha = (0.216 * edgeFade) + (0.063 * imaxVignette);
+	float localAlphaBoost = orbLight * 0.24;
+	gl_FragColor = vec4(color, baseAlpha + localAlphaBoost);
 }
 `;
 
@@ -159,7 +175,9 @@ const nebulaMaterial = new THREE.ShaderMaterial({
 	transparent: true,
 	uniforms: {
 		time: { value: 0 },
-		curvature: { value: 460.0 }
+		curvature: { value: 340.0 },
+		orbUv: { value: new THREE.Vector2(0.5, 0.5) },
+		orbBoost: { value: 0.0 }
 	},
 	vertexShader: nebulaVertexShader,
 	fragmentShader: nebulaFragmentShader,
@@ -230,15 +248,42 @@ function animate() {
 		sectionInfluence = Math.max(0, 1 - Math.min(1, distance / (window.innerHeight * 0.9)));
 		targetOrbX += Math.sin(orbitAngle * 1.55) * 95 * sectionInfluence;
 		targetOrbY = targetOrbY * (1 - sectionInfluence) + sectionCenterY * sectionInfluence;
+
+		if (sectionInfluence > 0.2 && cardNodes.length > 0) {
+			const now = performance.now();
+			if (now > orbPassState.nextSwapAt) {
+				orbPassState.cardIndex = Math.floor(Math.random() * cardNodes.length);
+				orbPassState.nextSwapAt = now + 3200 + Math.random() * 2600;
+				orbPassState.jitterSeed = Math.random() * Math.PI * 2;
+			}
+
+			const activeCard = cardNodes[orbPassState.cardIndex];
+			if (activeCard) {
+				const cardRect = activeCard.getBoundingClientRect();
+				const cardCenterX = cardRect.left + cardRect.width * 0.5;
+				const cardCenterY = cardRect.top + cardRect.height * 0.5;
+				const jitterX = Math.sin(now * 0.00035 + orbPassState.jitterSeed) * (cardRect.width * 0.34);
+				const jitterY = Math.cos(now * 0.00028 + orbPassState.jitterSeed * 1.3) * (cardRect.height * 0.22);
+
+				targetOrbX = targetOrbX * (1 - sectionInfluence) + (cardCenterX + jitterX) * sectionInfluence;
+				targetOrbY = targetOrbY * (1 - sectionInfluence) + (cardCenterY + jitterY) * sectionInfluence;
+			}
+		}
 	}
 
 		orbState.x += (targetOrbX - orbState.x) * 0.075;
 		orbState.y += (targetOrbY - orbState.y) * 0.075;
 
 		const orbScale = 1.05 + 0.18 * Math.sin(orbitAngle * 1.8);
-	const orbOpacity = 0.48 + 0.4 * sectionInfluence;
+	const orbOpacity = 0.34 + 0.24 * sectionInfluence;
 	scrollOrb.style.transform = `translate3d(${orbState.x}px, ${orbState.y}px, 0) scale(${orbScale})`;
 	scrollOrb.style.opacity = `${orbOpacity}`;
+
+		nebulaMaterial.uniforms.orbUv.value.set(
+			Math.min(1, Math.max(0, orbState.x / window.innerWidth)),
+			Math.min(1, Math.max(0, 1 - orbState.y / window.innerHeight))
+		);
+		nebulaMaterial.uniforms.orbBoost.value = 0.2 + sectionInfluence * 0.42;
 
 	renderer.render(scene, camera);
 }
