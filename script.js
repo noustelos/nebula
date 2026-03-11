@@ -178,8 +178,8 @@ let targetY = 0;
 document.addEventListener("mousemove", (e) => {
 	const x = e.clientX / window.innerWidth - 0.5;
 	const y = e.clientY / window.innerHeight - 0.5;
-	targetX = x * 4;
-	targetY = -y * 4;
+	targetX = x * 5;
+	targetY = -y * 5;
 });
 
 window.addEventListener("scroll", () => {
@@ -207,8 +207,8 @@ function animate() {
 	nebula.position.y = camera.position.y;
 	nebula.position.z = camera.position.z - 120;
 
-	camera.position.x += (targetX - camera.position.x) * 0.05;
-	camera.position.y += (targetY - camera.position.y) * 0.05;
+	camera.position.x += (targetX - camera.position.x) * 0.08;
+	camera.position.y += (targetY - camera.position.y) * 0.08;
 	camera.lookAt(scene.position);
 
 	const scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
