@@ -148,6 +148,7 @@ animation:hangFloat 5.2s ease-in-out infinite;
 .badge-row .card-red{
 	animation-duration:5.9s;
 	animation-delay:.35s;
+	background:linear-gradient(150deg, rgba(255,126,126,0.08), rgba(255,86,86,0.026) 44%, rgba(255,90,90,0.012) 100%), rgba(14, 18, 30, 0.02);
 }
 
 .badge-row .card-blue{
@@ -173,7 +174,7 @@ animation:hangFloat 5.2s ease-in-out infinite;
 }
 
 .badge-row .card-red::after{
-	background:linear-gradient(180deg, rgba(255,130,130,0.02), rgba(255,90,90,0.008) 40%, rgba(255,110,110,0.012) 100%);
+	background:linear-gradient(180deg, rgba(255,145,145,0.038), rgba(255,96,96,0.012) 40%, rgba(255,120,120,0.02) 100%);
 }
 
 .badge-button:hover{
@@ -237,7 +238,21 @@ font-size:26px;
 opacity:1;
 letter-spacing:2.2px;
 font-weight:700;
+position:relative;
 
+}
+
+.badge-label::after{
+	content:"";
+	position:absolute;
+	left:50%;
+	bottom:-8px;
+	width:0;
+	height:2px;
+	transform:translateX(-50%);
+	border-radius:999px;
+	opacity:0;
+	transition:width .35s ease, opacity .35s ease;
 }
 
 .badge-row .card-blue .badge-label{
@@ -251,71 +266,27 @@ font-weight:700;
 }
 
 .badge-row .card-blue:hover .badge-label{
-	text-shadow:0 0 10px rgba(106,197,255,0.95), 0 0 26px rgba(106,197,255,0.8), 0 0 58px rgba(106,197,255,0.62);
+	text-shadow:none;
 }
 
 .badge-row .card-red:hover .badge-label{
-	text-shadow:0 0 10px rgba(255,96,96,0.95), 0 0 26px rgba(255,96,96,0.8), 0 0 58px rgba(255,96,96,0.62);
+	text-shadow:none;
 }
 
-.matrix-bg{
-
-position:absolute;
-width:100%;
-height:100%;
-
-background:transparent;
-
-font-family:monospace;
-color:white;
-
-display:flex;
-flex-wrap:wrap;
-	z-index:0;
-
-opacity:.1;
-filter:contrast(115%) brightness(88%) blur(.4px);
-
+.badge-row .card-blue:hover .badge-label::after{
+	width:72%;
+	opacity:1;
+	background:linear-gradient(90deg, rgba(106,197,255,0), rgba(106,197,255,0.95), rgba(106,197,255,0));
+	box-shadow:0 0 8px rgba(106,197,255,0.7), 0 0 18px rgba(106,197,255,0.45);
 }
 
-.badge-row .card-blue .matrix-bg{
-	color:#4aa8ff;
-	opacity:.08;
-	text-shadow:0 0 6px rgba(74,168,255,0.4);
+.badge-row .card-red:hover .badge-label::after{
+	width:72%;
+	opacity:1;
+	background:linear-gradient(90deg, rgba(255,96,96,0), rgba(255,96,96,0.95), rgba(255,96,96,0));
+	box-shadow:0 0 8px rgba(255,96,96,0.7), 0 0 18px rgba(255,96,96,0.45);
 }
 
-.badge-row .card-red .matrix-bg{
-	color:#ff6b6b;
-	opacity:.08;
-	text-shadow:0 0 6px rgba(255,107,107,0.4);
-}
-
-.badge-button:hover .matrix-bg{
-	opacity:.03;
-}
-
-.matrix-bg span{
-
-width:20px;
-height:20px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:11px;
-
-animation:flip 0.6s infinite;
-
-}
-
-@keyframes flip{
-
-0%{transform:translateY(-3px)}
-50%{transform:translateY(3px)}
-100%{transform:translateY(-3px)}
-
-}
 
 @keyframes hangFloat{
 	0%{transform:rotate(-1.2deg) translateY(0) scale(1);}
@@ -400,12 +371,6 @@ animation:flip 0.6s infinite;
 		letter-spacing: 1.3px;
 	}
 
-	.matrix-bg span {
-		width: 16px;
-		height: 16px;
-		font-size: 9px;
-	}
-
 	.badge-button:hover {
 		transform: translateZ(70px) scale(1.07);
 	}
@@ -464,4 +429,9 @@ animation:flip 0.6s infinite;
 	transform:translate3d(-999px,-999px,0);
 	will-change:transform, opacity;
 	opacity:0;
+}
+
+.scroll-orb.is-hovering-card{
+	z-index:5;
+	opacity:0.62;
 }

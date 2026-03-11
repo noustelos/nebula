@@ -41,6 +41,18 @@ const orbPassState = {
 	cardIndex: 0,
 	jitterSeed: Math.random() * Math.PI * 2
 };
+let hoveredCard = null;
+
+cardNodes.forEach((card) => {
+	card.addEventListener("mouseenter", () => {
+		hoveredCard = card;
+		scrollOrb.classList.add("is-hovering-card");
+	});
+	card.addEventListener("mouseleave", () => {
+		if (hoveredCard === card) hoveredCard = null;
+		scrollOrb.classList.remove("is-hovering-card");
+	});
+});
 
 camera.position.z = 5;
 scene.fog = new THREE.FogExp2(0x000000, 0.0015);
@@ -148,15 +160,25 @@ void main(){
 	vec2 uv = vUv;
 	vec2 centered = uv - 0.5;
 	uv += centered * dot(centered, centered) * 0.16;
+	uv.x += sin(time * 0.62 + uv.y * 10.0) * 0.034;
+	uv.y += cos(time * 0.56 + uv.x * 8.0) * 0.03;
 
 	float n =
 		noise(uv*10.0 + time*0.2) +
 		noise(uv*20.0 - time*0.3);
+	float n2 =
+		noise(uv*6.5 - time*0.12) +
+		noise(uv*13.0 + time*0.18);
+	float flow = sin(time * 0.9 + n * 1.8 + n2 * 1.2);
+	float blob = sin((uv.x + uv.y) * 7.0 + time * 0.42) + cos((uv.x - uv.y) * 6.0 - time * 0.36);
+	float cloudMask = smoothstep(0.24, 1.05, n * 0.75 + n2 * 0.55 + blob * 0.22);
 
 	vec3 color =
 		vec3(0.2,0.1,0.6) +
-		n * vec3(0.3,0.2,0.8);
-	color *= 0.9;
+		n * vec3(0.3,0.2,0.8) +
+		n2 * vec3(0.1,0.06,0.26) +
+		flow * vec3(0.06,0.03,0.13);
+	color *= 0.84 * (0.64 + cloudMask * 0.62);
 
 	float orbDist = distance(vUv, orbUv);
 	float orbLight = smoothstep(0.38, 0.0, orbDist) * orbBoost;
@@ -164,8 +186,8 @@ void main(){
 
 	float edgeFade = 1.0 - smoothstep(0.58, 0.98, distance(vUv, vec2(0.5)));
 	float imaxVignette = 1.0 - smoothstep(0.45, 0.98, distance(vUv, vec2(0.5)));
-	float baseAlpha = (0.216 * edgeFade) + (0.063 * imaxVignette);
-	float localAlphaBoost = orbLight * 0.24;
+	float baseAlpha = ((0.16 * edgeFade) + (0.042 * imaxVignette)) * cloudMask;
+	float localAlphaBoost = orbLight * 0.18;
 	gl_FragColor = vec4(color, baseAlpha + localAlphaBoost);
 }
 `;
@@ -187,7 +209,7 @@ const nebulaMaterial = new THREE.ShaderMaterial({
 });
 
 const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-nebula.position.z = -120;
+nebula.position.z = -180;
 scene.add(nebula);
 
 let targetX = 0;
@@ -220,10 +242,10 @@ function animate() {
 	galaxyMaterial.uniforms.time.value += 0.016;
 	galaxy.rotation.y += 0.0006;
 	galaxy.rotation.x += 0.00015;
-	nebula.rotation.z += 0.00025;
-	nebula.position.x = camera.position.x;
-	nebula.position.y = camera.position.y;
-	nebula.position.z = camera.position.z - 120;
+	nebula.rotation.z += 0.0002;
+	nebula.position.x = camera.position.x * 0.35;
+	nebula.position.y = camera.position.y * 0.35;
+	nebula.position.z = camera.position.z - 180;
 
 	camera.position.x += (targetX - camera.position.x) * 0.08;
 	camera.position.y += (targetY - camera.position.y) * 0.08;
@@ -249,7 +271,18 @@ function animate() {
 		targetOrbX += Math.sin(orbitAngle * 1.55) * 95 * sectionInfluence;
 		targetOrbY = targetOrbY * (1 - sectionInfluence) + sectionCenterY * sectionInfluence;
 
-		if (sectionInfluence > 0.2 && cardNodes.length > 0) {
+		if (hoveredCard) {
+			const now = performance.now();
+			const cardRect = hoveredCard.getBoundingClientRect();
+			const cardCenterX = cardRect.left + cardRect.width * 0.5;
+			const cardCenterY = cardRect.top + cardRect.height * 0.5;
+			const satAngle = now * 0.0005;
+			const satRadiusX = cardRect.width * 0.72;
+			const satRadiusY = cardRect.height * 0.44;
+			targetOrbX = cardCenterX + Math.cos(satAngle) * satRadiusX;
+			targetOrbY = cardCenterY + Math.sin(satAngle * 0.9) * satRadiusY;
+			sectionInfluence = Math.max(sectionInfluence, 0.95);
+		} else if (sectionInfluence > 0.2 && cardNodes.length > 0) {
 			const now = performance.now();
 			if (now > orbPassState.nextSwapAt) {
 				orbPassState.cardIndex = Math.floor(Math.random() * cardNodes.length);
@@ -312,33 +345,3 @@ if (window.gsap && window.ScrollTrigger) {
 	})
 }
 
-const boards = document.querySelectorAll(".matrix-bg")
-
-boards.forEach(board=>{
-
-for(let i=0;i<120;i++){
-
-const cell = document.createElement("span")
-
-cell.innerText = Math.floor(Math.random()*10)
-
-board.appendChild(cell)
-
-}
-
-})
-
-setInterval(()=>{
-
-document.querySelectorAll(".matrix-bg span")
-.forEach(el=>{
-
-if(Math.random() > .9){
-
-el.innerText = Math.floor(Math.random()*10)
-
-}
-
-})
-
-},120)
