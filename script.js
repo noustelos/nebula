@@ -522,7 +522,8 @@ function animate() {
 			framesSinceTrail = 0;
 			const _tEl = trailPool[trailIndex];
 			_tEl.style.display = "block";
-			_tEl.style.transform = `translate3d(${orbState.x - 14}px, ${orbState.y - 14}px, 0) scale(1)`;
+			_tEl.style.setProperty("--tx", `${orbState.x - 14}px`);
+			_tEl.style.setProperty("--ty", `${orbState.y - 14}px`);
 			_tEl.className = "";
 			void _tEl.offsetWidth;
 			_tEl.className = "orb-trail";
