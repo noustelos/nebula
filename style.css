@@ -30,10 +30,15 @@ canvas {
 	margin: 0;
 	font-size: clamp(2.4rem, 8vw, 5rem);
 	letter-spacing: 3px;
-	background: linear-gradient(90deg, #ffffff, #9ab6ff, #ffffff);
+	background: linear-gradient(120deg, #ffffff 8%, #8fd4ff 30%, #79a5ff 52%, #d6c6ff 72%, #ffffff 92%);
+	background-size: 220% 220%;
 	background-clip: text;
 	-webkit-background-clip: text;
 	color: transparent;
+	mix-blend-mode: screen;
+	filter: saturate(140%) contrast(112%);
+	text-shadow: 0 0 16px rgba(188, 220, 255, 0.28), 0 0 40px rgba(132, 178, 255, 0.2);
+	animation: titleColorShift 7.5s ease-in-out infinite;
 }
 
 .hero-text p {
@@ -123,7 +128,7 @@ backdrop-filter:blur(24px) saturate(165%) brightness(1.04);
 	background:linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.08) 100%);
 	box-shadow:inset 0 1px 0 rgba(255,255,255,0.58), inset 0 -20px 40px rgba(0,0,0,0.2);
 	pointer-events:none;
-	z-index:0;
+	z-index:1;
 }
 
 .badge-button::before{
@@ -135,7 +140,7 @@ backdrop-filter:blur(24px) saturate(165%) brightness(1.04);
 	animation:spotSweepLeft 7.4s ease-in-out infinite;
 	filter:blur(22px);
 	pointer-events:none;
-	z-index:1;
+	z-index:2;
 }
 
 .badge-row .card-red{
@@ -255,27 +260,27 @@ color:white;
 
 display:flex;
 flex-wrap:wrap;
-	z-index:2;
+	z-index:0;
 
-opacity:.2;
+opacity:.1;
 filter:contrast(115%) brightness(88%) blur(.4px);
 
 }
 
 .badge-row .card-blue .matrix-bg{
 	color:#4aa8ff;
-	opacity:.2;
+	opacity:.08;
 	text-shadow:0 0 6px rgba(74,168,255,0.4);
 }
 
 .badge-row .card-red .matrix-bg{
 	color:#ff6b6b;
-	opacity:.2;
+	opacity:.08;
 	text-shadow:0 0 6px rgba(255,107,107,0.4);
 }
 
 .badge-button:hover .matrix-bg{
-	opacity:.06;
+	opacity:.03;
 }
 
 .matrix-bg span{
@@ -326,6 +331,111 @@ animation:flip 0.6s infinite;
 @keyframes scrollHintBounce{
 	0%, 100%{transform:translateY(0); opacity:0.55;}
 	50%{transform:translateY(10px); opacity:1;}
+}
+
+@keyframes titleColorShift{
+	0%{background-position:0% 50%;}
+	50%{background-position:100% 50%;}
+	100%{background-position:0% 50%;}
+}
+
+@media (max-width: 768px) {
+	body {
+		overflow-x: hidden;
+	}
+
+	.hero {
+		padding: 0 18px;
+	}
+
+	.hero-text h1 {
+		font-size: clamp(2rem, 12vw, 3.4rem);
+		letter-spacing: 1.4px;
+	}
+
+	.hero-text p {
+		font-size: 1rem;
+	}
+
+	.scroll-to-experience {
+		margin-top: 14px;
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+	}
+
+	.credential-section {
+		min-height: 100svh;
+		padding: 90px 16px 56px;
+		gap: 34px;
+	}
+
+	.badge-row {
+		gap: 22px;
+	}
+
+	.badge-button {
+		width: min(78vw, 290px);
+		height: min(60vh, 390px);
+		border-radius: 14px;
+	}
+
+	.badge-title {
+		font-size: 12px;
+		letter-spacing: 0.8px;
+	}
+
+	.badge-label {
+		font-size: clamp(1.05rem, 6.2vw, 1.55rem);
+		letter-spacing: 1.3px;
+	}
+
+	.matrix-bg span {
+		width: 16px;
+		height: 16px;
+		font-size: 9px;
+	}
+
+	.badge-button:hover {
+		transform: translateZ(70px) scale(1.07);
+	}
+
+	.scroll-orb {
+		width: 28px;
+		height: 28px;
+	}
+}
+
+@media (max-width: 430px) {
+	.hero-text h1 {
+		font-size: clamp(1.8rem, 13.5vw, 2.9rem);
+	}
+
+	.hero-text p {
+		font-size: 0.92rem;
+	}
+
+	.credential-section {
+		padding-top: 74px;
+		gap: 24px;
+	}
+
+	.badge-row {
+		gap: 16px;
+	}
+
+	.badge-button {
+		width: min(84vw, 320px);
+		height: min(56vh, 360px);
+	}
+
+	.badge-label {
+		font-size: clamp(1rem, 7vw, 1.35rem);
+	}
+
+	.scroll-orb {
+		width: 24px;
+		height: 24px;
+	}
 }
 
 .scroll-orb{
