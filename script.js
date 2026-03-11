@@ -25,6 +25,16 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x222244);
 document.body.appendChild(renderer.domElement);
 
+const credentialSection = document.querySelector(".credential-section");
+const scrollOrb = document.createElement("div");
+scrollOrb.className = "scroll-orb";
+document.body.appendChild(scrollOrb);
+
+const orbState = {
+	x: window.innerWidth * 0.5,
+	y: window.innerHeight * 0.5
+};
+
 camera.position.z = 5;
 scene.fog = new THREE.FogExp2(0x000000, 0.0015);
 
@@ -200,6 +210,35 @@ function animate() {
 	camera.position.x += (targetX - camera.position.x) * 0.05;
 	camera.position.y += (targetY - camera.position.y) * 0.05;
 	camera.lookAt(scene.position);
+
+	const scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+	const progress = window.scrollY / scrollMax;
+	const orbitAngle = progress * Math.PI * 10 + performance.now() * 0.00024;
+	const radiusX = Math.min(window.innerWidth * 0.42, 420);
+	const radiusY = Math.min(window.innerHeight * 0.28, 240);
+	const orbitCenterX = window.innerWidth * 0.5;
+	const orbitCenterY = window.innerHeight * 0.58;
+
+	let targetOrbX = orbitCenterX + Math.cos(orbitAngle) * radiusX;
+	let targetOrbY = orbitCenterY + Math.sin(orbitAngle * 1.15) * radiusY;
+	let sectionInfluence = 0;
+
+	if (credentialSection) {
+		const rect = credentialSection.getBoundingClientRect();
+		const sectionCenterY = rect.top + rect.height * 0.42;
+		const distance = Math.abs(sectionCenterY - window.innerHeight * 0.5);
+		sectionInfluence = Math.max(0, 1 - Math.min(1, distance / (window.innerHeight * 0.9)));
+		targetOrbX += Math.sin(orbitAngle * 1.55) * 95 * sectionInfluence;
+		targetOrbY = targetOrbY * (1 - sectionInfluence) + sectionCenterY * sectionInfluence;
+	}
+
+		orbState.x += (targetOrbX - orbState.x) * 0.075;
+		orbState.y += (targetOrbY - orbState.y) * 0.075;
+
+		const orbScale = 1.05 + 0.18 * Math.sin(orbitAngle * 1.8);
+	const orbOpacity = 0.48 + 0.4 * sectionInfluence;
+	scrollOrb.style.transform = `translate3d(${orbState.x}px, ${orbState.y}px, 0) scale(${orbScale})`;
+	scrollOrb.style.opacity = `${orbOpacity}`;
 
 	renderer.render(scene, camera);
 }
