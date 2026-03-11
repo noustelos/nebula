@@ -63,7 +63,7 @@ perspective:1200px;
 }
 
 .scroll-to-experience{
-	margin:20px 0 0;
+	margin:110px 0 0;
 	font-size:clamp(0.72rem, 1.4vw, 0.9rem);
 	text-transform:uppercase;
 	letter-spacing:0.14em;
@@ -100,7 +100,7 @@ height:190px;
 
 overflow:hidden;
 
-border-radius:12px;
+border-radius:16px;
 
 cursor:pointer;
 
@@ -109,15 +109,14 @@ opacity:0;
 visibility:hidden;
 
 transform-style:preserve-3d;
-border:1px solid rgba(255,255,255,0.24);
-box-shadow:0 22px 42px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08);
+border: 1px solid rgba(255, 255, 255, 0.3);
+box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.08);
 transition:transform .45s ease, box-shadow .45s ease;
 transform-origin:50% -120px;
 animation:hangFloat 5.2s ease-in-out infinite;
-	background:rgba(14, 18, 30, 0.028);
-	backdrop-filter:blur(28px) saturate(162%) brightness(1.04);
-	-webkit-backdrop-filter:blur(28px) saturate(162%) brightness(1.04);
-
+	background:rgba(20, 25, 40, 0.28);
+	backdrop-filter:blur(32px) saturate(140%) brightness(1.1);
+	-webkit-backdrop-filter:blur(32px) saturate(140%) brightness(1.1);
 }
 
 .badge-button::after{
@@ -126,7 +125,9 @@ animation:hangFloat 5.2s ease-in-out infinite;
 	inset:0;
 	border-radius:inherit;
 	background:transparent;
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.22), inset 0 0 0 2px rgba(230,243,255,0.18), inset 0 0 0 3px rgba(130,170,210,0.05);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+							inset 0 -1px 0 rgba(255, 255, 255, 0.2),
+							inset 0 0 0 2px rgba(230,243,255,0.18);
 	opacity:1;
 	pointer-events:none;
 	z-index:1;
@@ -141,7 +142,7 @@ animation:hangFloat 5.2s ease-in-out infinite;
 	animation:spotSweepLeft 7.4s ease-in-out infinite;
 	filter:blur(26px);
 	pointer-events:none;
-	opacity:0.55;
+	opacity:0.45;
 	z-index:0;
 }
 
@@ -416,16 +417,20 @@ position:relative;
 
 .scroll-orb{
 	position:fixed;
-	left:0;
-	top:0;
+	left:-50px;
+	top:-50px;
 	width:34px;
 	height:34px;
 	border-radius:50%;
 	pointer-events:none;
 	z-index:1;
-	background:radial-gradient(circle at 38% 35%, rgba(255,255,255,0.8) 0%, rgba(246,251,255,0.72) 18%, rgba(224,236,255,0.42) 42%, rgba(198,217,255,0.18) 66%, rgba(198,217,255,0.03) 84%, rgba(198,217,255,0) 100%);
-	box-shadow:0 0 18px rgba(255,255,255,0.7), 0 0 44px rgba(222,236,255,0.48), 0 0 96px rgba(198,222,255,0.28);
-	filter:blur(1.8px);
+	background:radial-gradient(circle at 38% 35%, white 0%, white 4%, rgba(220, 235, 255, 0.8) 15%, rgba(180, 210, 255, 0.42) 42%, rgba(150, 190, 255, 0.12) 75%, transparent 100%);
+	box-shadow:
+		0 0 14px 2px #fff,
+		0 0 28px 6px rgba(180, 220, 255, 0.82),
+		0 0 72px 18px rgba(120, 160, 255, 0.42),
+		inset 0 0 6px 1px rgba(255, 255, 255, 0.8);
+	filter:blur(2px);
 	transform:translate3d(-999px,-999px,0);
 	will-change:transform, opacity;
 	opacity:0;
@@ -434,4 +439,30 @@ position:relative;
 .scroll-orb.is-hovering-card{
 	z-index:5;
 	opacity:0.62;
+}
+
+.orb-trail {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 0;
+	background: radial-gradient(circle, rgba(200, 220, 255, 0.5) 0%, rgba(180, 210, 255, 0.2) 40%, transparent 75%);
+	filter: blur(2.5px);
+	will-change: transform, opacity;
+	animation: orb-trail-fade 0.9s ease-out forwards;
+}
+
+@keyframes orb-trail-fade {
+	from {
+		transform: scale(1);
+		opacity: 0.8;
+	}
+	to {
+		transform: scale(0.2);
+		opacity: 0;
+	}
 }
