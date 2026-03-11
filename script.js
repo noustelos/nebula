@@ -1,8 +1,16 @@
 const canvas = document.querySelector("#bg");
+const heroText = document.querySelector(".hero-text");
+const scrollHint = document.querySelector(".scroll-to-experience");
+const rootStyle = document.documentElement.style;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
 if (!canvas || typeof THREE === "undefined") {
 	throw new Error("Missing canvas or THREE library.");
 }
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const lerp = (start, end, factor) => start + (end - start) * factor;
 
 canvas.style.width = "100vw";
 canvas.style.height = "100vh";
@@ -21,7 +29,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice ? 1.3 : 1.75));
 renderer.setClearColor(0x222244);
 document.body.appendChild(renderer.domElement);
 
@@ -31,7 +39,7 @@ scrollOrb.className = "scroll-orb";
 document.body.appendChild(scrollOrb);
 
 const trailPool = [];
-const trailSize = 25;
+const trailSize = prefersReducedMotion ? 0 : isTouchDevice ? 10 : 25;
 for (let i = 0; i < trailSize; i++) {
 	const trailEl = document.createElement("div");
 	trailEl.className = "orb-trail";
@@ -41,12 +49,21 @@ for (let i = 0; i < trailSize; i++) {
 }
 let trailIndex = 0;
 let framesSinceTrail = 0;
+const trailCadence = isTouchDevice ? 5 : 2;
 
 
 const orbState = {
 	x: window.innerWidth * 0.5,
 	y: window.innerHeight * 0.5
 };
+const heroState = {
+	x: 0,
+	y: 0,
+	targetX: 0,
+	targetY: 0
+};
+let targetCameraZ = 5;
+let scrollSceneProgress = 0;
 
 const cardNodes = Array.from(document.querySelectorAll(".badge-button"));
 const orbPassState = {
@@ -57,11 +74,36 @@ const orbPassState = {
 let hoveredCard = null;
 
 cardNodes.forEach((card) => {
-	card.addEventListener("mouseenter", () => {
+	card.addEventListener("pointerenter", () => {
 		hoveredCard = card;
 		scrollOrb.classList.add("is-hovering-card");
 	});
-	card.addEventListener("mouseleave", () => {
+	card.addEventListener("pointermove", (event) => {
+		if (prefersReducedMotion || isTouchDevice) return;
+		const rect = card.getBoundingClientRect();
+		const relativeX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+		const relativeY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+		const tiltX = (relativeX - 0.5) * 10;
+		const tiltY = (0.5 - relativeY) * 8;
+
+		card.style.setProperty("--pointer-x", `${(relativeX * 100).toFixed(2)}%`);
+		card.style.setProperty("--pointer-y", `${(relativeY * 100).toFixed(2)}%`);
+		card.style.setProperty("--tilt-x", `${tiltX.toFixed(2)}deg`);
+		card.style.setProperty("--tilt-y", `${tiltY.toFixed(2)}deg`);
+	});
+	card.addEventListener("pointerleave", () => {
+		if (hoveredCard === card) hoveredCard = null;
+		scrollOrb.classList.remove("is-hovering-card");
+		card.style.setProperty("--pointer-x", "50%");
+		card.style.setProperty("--pointer-y", "50%");
+		card.style.setProperty("--tilt-x", "0deg");
+		card.style.setProperty("--tilt-y", "0deg");
+	});
+	card.addEventListener("focusin", () => {
+		hoveredCard = card;
+		scrollOrb.classList.add("is-hovering-card");
+	});
+	card.addEventListener("focusout", () => {
 		if (hoveredCard === card) hoveredCard = null;
 		scrollOrb.classList.remove("is-hovering-card");
 	});
@@ -164,6 +206,7 @@ varying vec2 vUv;
 uniform float time;
 uniform vec2 orbUv;
 uniform float orbBoost;
+uniform float scrollProgress;
 
 // Simplex Noise function
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -233,18 +276,22 @@ void main() {
 	f = 0.5 + 0.5 * f;
 
 	float cloudMask = smoothstep(0.45, 0.8, f);
+	float veil = 0.5 + 0.5 * snoise(vec3(vUv * 2.6, t * 0.18 + 7.0));
+	float stormMask = smoothstep(0.42, 0.82, veil + scrollProgress * 0.18);
 	
 	vec3 color = vec3(0.05, 0.08, 0.22); // Deep space blue
 	color = mix(color, vec3(0.1, 0.05, 0.25), cloudMask); // Purple hues
 	color = mix(color, vec3(0.8, 0.2, 0.5), pow(cloudMask, 4.0) * 0.3); // Magenta highlights
 	color = mix(color, vec3(0.9, 0.9, 1.0), pow(cloudMask, 32.0) * 0.1); // Bright cores
+	color += mix(vec3(0.08, 0.16, 0.34), vec3(0.34, 0.1, 0.26), scrollProgress) * stormMask * 0.14;
 
 	float orbDist = distance(vUv, orbUv);
 	float orbLight = smoothstep(0.25, 0.0, orbDist) * orbBoost;
 	color += vec3(0.2, 0.3, 0.5) * orbLight;
 
 	float edgeFade = 1.0 - smoothstep(0.4, 0.98, distance(vUv, vec2(0.5)));
-	gl_FragColor = vec4(color, cloudMask * 0.8 * edgeFade);
+	float cinematicPulse = 0.9 + 0.1 * sin(time * 0.22 + scrollProgress * 3.14159);
+	gl_FragColor = vec4(color * cinematicPulse, (cloudMask * 0.72 + stormMask * 0.14 + orbLight * 0.08) * edgeFade);
 }
 `;
 
@@ -255,7 +302,8 @@ const nebulaMaterial = new THREE.ShaderMaterial({
 		time: { value: 0 },
 		curvature: { value: 340.0 },
 		orbUv: { value: new THREE.Vector2(0.5, 0.5) },
-		orbBoost: { value: 0.0 }
+		orbBoost: { value: 0.0 },
+		scrollProgress: { value: 0.0 }
 	},
 	vertexShader: nebulaVertexShader,
 	fragmentShader: nebulaFragmentShader,
@@ -271,24 +319,33 @@ scene.add(nebula);
 let targetX = 0;
 let targetY = 0;
 
-document.addEventListener("mousemove", (e) => {
+document.addEventListener("pointermove", (e) => {
 	const x = e.clientX / window.innerWidth - 0.5;
 	const y = e.clientY / window.innerHeight - 0.5;
 	targetX = x * 5;
 	targetY = -y * 5;
+	if (!prefersReducedMotion) {
+		heroState.targetX = x * 18;
+		heroState.targetY = y * 14;
+	}
 });
 
-window.addEventListener("scroll", () => {
+function updateScrollSceneState() {
 	const t = document.body.getBoundingClientRect().top;
+	scrollSceneProgress = clamp(window.scrollY / Math.max(window.innerHeight * 0.92, 1), 0, 1);
 	const nextZ = 5 + t * -0.01;
-	camera.position.z = Math.max(3.5, Math.min(12, nextZ));
+	targetCameraZ = clamp(nextZ + scrollSceneProgress * 0.9, 4.2, 11.5);
 	galaxy.rotation.y += t * -0.0002;
-});
+}
+
+window.addEventListener("scroll", updateScrollSceneState);
+updateScrollSceneState();
 
 window.addEventListener("resize", () => {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, isTouchDevice ? 1.3 : 1.75));
 });
 
 function animate() {
@@ -301,11 +358,26 @@ function animate() {
 	nebula.rotation.z += 0.0002;
 	nebula.position.x = camera.position.x * 0.35;
 	nebula.position.y = camera.position.y * 0.35;
+	camera.position.z = lerp(camera.position.z, targetCameraZ, prefersReducedMotion ? 0.16 : 0.05);
 	nebula.position.z = camera.position.z - 180;
 
 	camera.position.x += (targetX - camera.position.x) * 0.08;
 	camera.position.y += (targetY - camera.position.y) * 0.08;
 	camera.lookAt(scene.position);
+
+	if (heroText && !prefersReducedMotion) {
+		heroState.x = lerp(heroState.x, heroState.targetX * (1 - scrollSceneProgress * 0.65), 0.08);
+		heroState.y = lerp(heroState.y, heroState.targetY * (1 - scrollSceneProgress * 0.65) - scrollSceneProgress * 52, 0.08);
+		rootStyle.setProperty("--hero-shift-x", `${heroState.x.toFixed(2)}px`);
+		rootStyle.setProperty("--hero-shift-y", `${heroState.y.toFixed(2)}px`);
+		rootStyle.setProperty("--hero-fade", `${(1 - scrollSceneProgress * 0.78).toFixed(3)}`);
+		rootStyle.setProperty("--hero-blur", `${(scrollSceneProgress * 6).toFixed(2)}px`);
+	} else {
+		rootStyle.setProperty("--hero-shift-x", "0px");
+		rootStyle.setProperty("--hero-shift-y", "0px");
+		rootStyle.setProperty("--hero-fade", `${(1 - scrollSceneProgress * 0.55).toFixed(3)}`);
+		rootStyle.setProperty("--hero-blur", "0px");
+	}
 
 	const scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 	const progress = window.scrollY / scrollMax;
@@ -318,6 +390,17 @@ function animate() {
 	let targetOrbX = orbitCenterX + Math.cos(orbitAngle) * radiusX;
 	let targetOrbY = orbitCenterY + Math.sin(orbitAngle * 1.15) * radiusY;
 	let sectionInfluence = 0;
+	let highlightedCard = null;
+	let orbRgb = "190, 220, 255";
+
+	if (scrollHint && scrollSceneProgress < 0.24) {
+		const hintRect = scrollHint.getBoundingClientRect();
+		const hintX = hintRect.left + hintRect.width * 0.5;
+		const hintY = hintRect.top + hintRect.height * 0.5;
+		const introLock = 1 - scrollSceneProgress / 0.24;
+		targetOrbX = lerp(targetOrbX, hintX, introLock * 0.82);
+		targetOrbY = lerp(targetOrbY, hintY + Math.sin(orbitAngle * 1.5) * 12, introLock * 0.82);
+	}
 
 	if (credentialSection) {
 		const rect = credentialSection.getBoundingClientRect();
@@ -338,6 +421,7 @@ function animate() {
 			targetOrbX = cardCenterX + Math.cos(satAngle) * satRadiusX;
 			targetOrbY = cardCenterY + Math.sin(satAngle * 0.9) * satRadiusY;
 			sectionInfluence = Math.max(sectionInfluence, 0.95);
+			highlightedCard = hoveredCard;
 		} else if (sectionInfluence > 0.2 && cardNodes.length > 0) {
 			const now = performance.now();
 			if (now > orbPassState.nextSwapAt) {
@@ -356,36 +440,55 @@ function animate() {
 
 				targetOrbX = targetOrbX * (1 - sectionInfluence) + (cardCenterX + jitterX) * sectionInfluence;
 				targetOrbY = targetOrbY * (1 - sectionInfluence) + (cardCenterY + jitterY) * sectionInfluence;
+				highlightedCard = activeCard;
 			}
 		}
 	}
 
-			orbState.x += (targetOrbX - orbState.x) * 0.06;
-			orbState.y += (targetOrbY - orbState.y) * 0.06;
-		
-			framesSinceTrail++;
-			if (framesSinceTrail > 2) {
-				framesSinceTrail = 0;
-				const trailEl = trailPool[trailIndex];
-				trailEl.style.display = "block";
-				trailEl.style.transform = `translate3d(${orbState.x-14}px, ${orbState.y-14}px, 0) scale(1)`;
-		
-				trailEl.className = "";
-				void trailEl.offsetWidth; 
-				trailEl.className = "orb-trail";
-				
-				trailIndex = (trailIndex + 1) % trailSize;
-			}
-		
-			const orbScale = 1.05 + 0.18 * Math.sin(orbitAngle * 1.8);
-			const orbOpacity = 0.34 + 0.24 * sectionInfluence;
-			scrollOrb.style.transform = `translate3d(${orbState.x - 17}px, ${orbState.y - 17}px, 0) scale(${orbScale})`;
-			scrollOrb.style.opacity = `${orbOpacity}`;
+	cardNodes.forEach((card) => {
+		const cardRect = card.getBoundingClientRect();
+		const cardCenterX = cardRect.left + cardRect.width * 0.5;
+		const cardCenterY = cardRect.top + cardRect.height * 0.5;
+		const maxDistance = Math.max(cardRect.width, cardRect.height) * 1.25;
+		const distance = Math.hypot(orbState.x - cardCenterX, orbState.y - cardCenterY);
+		const orbGlow = clamp(1 - distance / maxDistance, 0, 1);
+		card.style.setProperty("--orb-glow", orbGlow.toFixed(3));
+	});
+
+	if (highlightedCard?.dataset.orbRgb) {
+		orbRgb = highlightedCard.dataset.orbRgb;
+	}
+
+	orbState.x += (targetOrbX - orbState.x) * (prefersReducedMotion ? 0.12 : 0.06);
+	orbState.y += (targetOrbY - orbState.y) * (prefersReducedMotion ? 0.12 : 0.06);
+	rootStyle.setProperty("--orb-rgb", orbRgb);
+
+	if (trailSize > 0) {
+		framesSinceTrail++;
+		if (framesSinceTrail > trailCadence) {
+			framesSinceTrail = 0;
+			const trailEl = trailPool[trailIndex];
+			trailEl.style.display = "block";
+			trailEl.style.transform = `translate3d(${orbState.x - 14}px, ${orbState.y - 14}px, 0) scale(1)`;
+
+			trailEl.className = "";
+			void trailEl.offsetWidth;
+			trailEl.className = "orb-trail";
+
+			trailIndex = (trailIndex + 1) % trailSize;
+		}
+	}
+
+	const orbScale = 1.05 + 0.18 * Math.sin(orbitAngle * 1.8);
+	const orbOpacity = 0.34 + 0.24 * sectionInfluence;
+	scrollOrb.style.transform = `translate3d(${orbState.x - 17}px, ${orbState.y - 17}px, 0) scale(${orbScale})`;
+	scrollOrb.style.opacity = `${orbOpacity}`;
 		nebulaMaterial.uniforms.orbUv.value.set(
-			Math.min(1, Math.max(0, orbState.x / window.innerWidth)),
-			Math.min(1, Math.max(0, 1 - orbState.y / window.innerHeight))
+		clamp(orbState.x / window.innerWidth, 0, 1),
+		clamp(1 - orbState.y / window.innerHeight, 0, 1)
 		);
-		nebulaMaterial.uniforms.orbBoost.value = 0.2 + sectionInfluence * 0.42;
+	nebulaMaterial.uniforms.orbBoost.value = 0.18 + sectionInfluence * 0.46;
+	nebulaMaterial.uniforms.scrollProgress.value = scrollSceneProgress;
 
 	renderer.render(scene, camera);
 }
@@ -397,6 +500,7 @@ if (window.gsap && window.ScrollTrigger) {
 
 	gsap.fromTo(".badge-button",{
 		autoAlpha:0,
+		filter:"blur(18px)",
 	},{
 
 		scrollTrigger:{
@@ -406,7 +510,8 @@ if (window.gsap && window.ScrollTrigger) {
 		},
 
 		autoAlpha:1,
-		stagger:0.3,
+		filter:"blur(0px)",
+		stagger:0.22,
 		duration:1.2,
 		ease:"power3.out",
 		immediateRender:false
