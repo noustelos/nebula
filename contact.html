@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebHostPro | Επικοινωνία</title>
+<meta name="description" content="Επικοινωνία με τη WebHostPro για websites, e-shops, branding, SEO, hosting και υποστήριξη.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<header class="site-header">
+<a class="brand-mark" href="index.html">WebHostPro</a>
+<nav class="site-nav">
+<a href="index.html">Αρχική</a>
+<a href="services.html">Υπηρεσίες</a>
+<a href="projects.html">Έργα</a>
+<a href="contact.html" class="nav-cta">Επικοινωνία</a>
+</nav>
+</header>
+
+<main class="page-shell">
+<section class="section-shell page-hero" data-reveal>
+<p class="section-kicker">Επικοινωνία</p>
+<h1 class="page-intro-title">Αν έχεις project, brief ή απλώς χρειάζεσαι καθαρή τεχνική κατεύθυνση, ξεκινάμε από εκεί.</h1>
+<p class="page-intro">Μπορείς να έρθεις με ιδέα, με υπάρχον site που χρειάζεται αναβάθμιση ή με ανάγκη για hosting και υποστήριξη. Ο στόχος είναι να βρούμε το σωστό scope και όχι να σε στριμώξουμε σε ένα generic πακέτο.</p>
+</section>
+
+<section class="section-shell contact-grid">
+<article class="contact-form" data-reveal>
+<p class="section-kicker">Project Brief</p>
+<h3>Στείλε μας τα βασικά στοιχεία</h3>
+<p>Το form λειτουργεί ως contact section mockup και μπορεί να συνδεθεί αργότερα με email service ή custom backend handler.</p>
+<form class="form-grid">
+<div class="field">
+<label for="name">Όνομα</label>
+<input id="name" name="name" type="text" placeholder="Το όνομά σου">
+</div>
+<div class="field">
+<label for="email">Email</label>
+<input id="email" name="email" type="email" placeholder="you@example.com">
+</div>
+<div class="field">
+<label for="company">Εταιρεία</label>
+<input id="company" name="company" type="text" placeholder="Επωνυμία ή brand">
+</div>
+<div class="field">
+<label for="service">Υπηρεσία</label>
+<select id="service" name="service">
+<option>Web Design</option>
+<option>Branding & SEO</option>
+<option>Website / E-shop Development</option>
+<option>Hosting</option>
+<option>Support</option>
+</select>
+</div>
+<div class="field field-full">
+<label for="message">Σύντομο brief</label>
+<textarea id="message" name="message" placeholder="Πες μας τι θέλεις να χτίσουμε, σε τι φάση βρίσκεσαι και ποιος είναι ο στόχος."></textarea>
+</div>
+<div class="field field-full">
+<button class="button button-primary" type="submit">Αποστολή brief</button>
+</div>
+</form>
+</article>
+
+<div class="support-points">
+<article class="contact-card" data-reveal>
+<h3>Τι μας βοηθά να ξέρουμε</h3>
+<ul class="contact-list">
+<li>Τι τύπου project χρειάζεσαι</li>
+<li>Αν υπάρχει υπάρχον site ή brand</li>
+<li>Αν χρειάζεσαι και hosting / support</li>
+<li>Αν υπάρχει συγκεκριμένο timeline</li>
+</ul>
+</article>
+<article class="contact-card" data-reveal>
+<h3>Εναλλακτικά</h3>
+<ul class="contact-list">
+<li>Email: hello@webhostpro.example</li>
+<li>Discovery call για γρήγορο scoping</li>
+<li>Support requests για υπάρχοντες πελάτες</li>
+</ul>
+</article>
+</div>
+</section>
+
+<section class="section-shell process-grid">
+<article class="faq-card" data-reveal>
+<h3>Πόσο γρήγορα ξεκινάμε;</h3>
+<p>Αφού οριστικοποιηθεί το scope, μπορούμε να περάσουμε γρήγορα σε strategy και visual direction με καθαρό χρονοδιάγραμμα.</p>
+</article>
+<article class="faq-card" data-reveal>
+<h3>Αναλαμβάνετε υπάρχοντα sites;</h3>
+<p>Ναι. Μπορούμε να ανασχεδιάσουμε, να βελτιώσουμε ή να αναλάβουμε hosting και support πάνω σε υπάρχουσα βάση.</p>
+</article>
+</section>
+</main>
+
+<footer class="site-footer">
+<div>
+<a class="brand-mark footer-brand" href="index.html">WebHostPro</a>
+<p>Επικοινωνία για νέα websites, e-shops, redesigns, hosting και συνεχή υποστήριξη.</p>
+</div>
+<div class="footer-links">
+<a href="index.html">Αρχική</a>
+<a href="services.html">Υπηρεσίες</a>
+<a href="projects.html">Έργα</a>
+</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

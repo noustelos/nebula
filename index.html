@@ -1,80 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Immersive Hero</title>
+<title>WebHostPro | Σχεδιασμός Ιστοσελίδων, Branding, SEO, Development, Hosting</title>
+<meta name="description" content="Η WebHostPro σχεδιάζει brands, websites και e-shops με cinematic αισθητική, τεχνική ακρίβεια, φιλοξενία και συνεχή υποστήριξη.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-
-<div class="hero">
-<div class="hero-text">
-<h1>WebHostPro</h1>
-<p class="hero-subtitle">a Web Design Experience</p>
-<p class="scroll-to-experience">Scroll to experience</p>
-</div>
-</div>
-
 <canvas id="bg"></canvas>
 
-<section class="gateway-section">
+<header class="site-header">
+<a class="brand-mark" href="index.html">WebHostPro</a>
+<nav class="site-nav">
+<a href="#services">Υπηρεσίες</a>
+<a href="#process">Διαδικασία</a>
+<a href="#projects">Έργα</a>
+<a href="services.html">Αναλυτικές Υπηρεσίες</a>
+<a href="projects.html">Επιλεγμένα Έργα</a>
+<a href="contact.html" class="nav-cta">Επικοινωνία</a>
+</nav>
+</header>
 
-  <a href="#" class="gateway-card" data-index="01">
-    <div class="gateway-inner">
-      <span class="gateway-num">01</span>
-      <span class="gateway-title">HOSTING</span>
-      <div class="gateway-content">
-        <span class="gateway-sub">Φιλοξενία υψηλών επιδόσεων</span>
-        <span class="gateway-desc">NVMe SSD, 99.9% uptime, auto-scaling. Η σελίδα σου ζωντανή με ταχύτητα που αισθάνεσαι.</span>
-      </div>
-      <span class="gateway-arrow">→</span>
-    </div>
-  </a>
+<main class="page-shell">
+<section class="hero hero-panel" id="top">
+<div class="hero-grid section-shell">
+<div class="hero-copy" data-reveal="hero-copy">
+<p class="hero-kicker">Web Design • Branding • SEO • Development • Hosting • Support</p>
+<h1>Σχεδιάζουμε websites και e-shops που αποπνέουν κύρος πριν ακόμη διαβαστεί η πρώτη γραμμή.</h1>
+<p class="hero-subtitle">Η WebHostPro συνδυάζει visual direction, στρατηγική περιεχομένου, custom development και managed υποδομή για brands που θέλουν πιο καθαρή εικόνα, πιο ισχυρή παρουσία και site που αντέχει στην πραγματική χρήση.</p>
+<div class="hero-actions">
+<a class="button button-primary" href="contact.html">Κλείσε εισαγωγική κλήση</a>
+<a class="button button-secondary" href="#services">Δες το εύρος υπηρεσιών</a>
+</div>
+<ul class="hero-metrics">
+<li><strong>Brand-led</strong><span>Ταυτότητα, positioning και οπτική συνοχή από το πρώτο concept</span></li>
+<li><strong>Search-ready</strong><span>Δομή, περιεχόμενο και τεχνικά θεμέλια για ουσιαστική οργανική παρουσία</span></li>
+<li><strong>Launch-backed</strong><span>Hosting, παρακολούθηση και πραγματική υποστήριξη μετά το ανέβασμα</span></li>
+</ul>
+</div>
 
-  <a href="#" class="gateway-card" data-index="02">
-    <div class="gateway-inner">
-      <span class="gateway-num">02</span>
-      <span class="gateway-title">DOMAINS</span>
-      <div class="gateway-content">
-        <span class="gateway-sub">Το domain σου, το brand σου</span>
-        <span class="gateway-desc">Καταχώρηση, μεταφορά, DNS management. Εκατοντάδες επεκτάσεις σε ένα μέρος.</span>
-      </div>
-      <span class="gateway-arrow">→</span>
-    </div>
-  </a>
+<div class="hero-side" data-reveal="hero-side">
+<div class="hero-stage glass-panel">
+<span class="hero-stage-label">Cinematic Production Stack</span>
+<div class="hero-stage-core">
+<span class="stage-ring stage-ring-one"></span>
+<span class="stage-ring stage-ring-two"></span>
+<span class="stage-beam stage-beam-left"></span>
+<span class="stage-beam stage-beam-right"></span>
+<div class="stage-node">
+<span class="stage-node-label">WebHostPro</span>
+<strong>Brand + UI + Build + Hosting</strong>
+<p>Μία ενιαία παραγωγική ροή, από το πρώτο concept μέχρι τη στήριξη μετά το launch.</p>
+</div>
+</div>
+<div class="hero-badges">
+<span class="floating-tag">Premium Positioning</span>
+<span class="floating-tag">Cinematic Experience</span>
+<span class="floating-tag">Managed Launch</span>
+</div>
+</div>
 
-  <a href="#" class="gateway-card" data-index="03">
-    <div class="gateway-inner">
-      <span class="gateway-num">03</span>
-      <span class="gateway-title">SECURITY</span>
-      <div class="gateway-content">
-        <span class="gateway-sub">Προστασία & SSL</span>
-        <span class="gateway-desc">Wildcard SSL, DDoS protection, firewall. Η ψηφιακή σου παρουσία θωρακισμένη.</span>
-      </div>
-      <span class="gateway-arrow">→</span>
-    </div>
-  </a>
+<article class="glass-panel signal-card">
+<span class="panel-label">Studio Direction</span>
+<h2>Από το πρώτο impression μέχρι το τελικό inquiry, κάθε layer υπηρετεί αντίληψη και απόδοση.</h2>
+<p>Δεν μας αρκεί να είναι κάτι όμορφο. Χτίζουμε εμπειρίες που εξηγούν καθαρά την αξία του brand, οργανώνουν σωστά την πληροφορία και αφήνουν αίσθηση σοβαρής, σύγχρονης επιχείρησης.</p>
+</article>
 
-  <a href="#" class="gateway-card" data-index="04">
-    <div class="gateway-inner">
-      <span class="gateway-num">04</span>
-      <span class="gateway-title">SUPPORT</span>
-      <div class="gateway-content">
-        <span class="gateway-sub">24/7 Ανθρώπινη υποστήριξη</span>
-        <span class="gateway-desc">Ειδικοί διαθέσιμοι οποιαδήποτε ώρα. Απαντάμε πριν προλάβεις να ανησυχήσεις.</span>
-      </div>
-      <span class="gateway-arrow">→</span>
-    </div>
-  </a>
-
+<div class="signal-stack">
+<article class="glass-panel mini-panel">
+<span class="mini-value">01</span>
+<p>Design language με συνέπεια σε site, campaigns και υλικά προβολής.</p>
+</article>
+<article class="glass-panel mini-panel">
+<span class="mini-value">02</span>
+<p>Custom υλοποίηση για εταιρικά websites, landing pages και e-shops.</p>
+</article>
+<article class="glass-panel mini-panel">
+<span class="mini-value">03</span>
+<p>Υποδομή, monitoring και ανθρώπινη συνέχεια μετά το launch.</p>
+</article>
+</div>
+</div>
+</div>
 </section>
+
+<section class="section-shell intro-strip" data-reveal>
+<p>Για εταιρείες που χρειάζονται ισχυρή εικόνα, ώριμη τεχνική βάση και digital παρουσία που δείχνει ακριβή χωρίς να γίνεται θορυβώδης.</p>
+<div class="strip-stats">
+<span>Positioning-led</span>
+<span>Search-conscious</span>
+<span>Conversion-minded</span>
+<span>Hosted & maintained</span>
+</div>
+</section>
+
+<section class="section-shell content-section" id="services">
+<div class="section-heading" data-reveal>
+<p class="section-kicker">Βασικές Υπηρεσίες</p>
+<h2>Δεν παραδίδουμε μόνο design. Παραδίδουμε εικόνα, εμπειρία, υποδομή και συνέχεια.</h2>
+</div>
+
+<div class="services-grid">
+<article class="service-card glass-panel" data-reveal>
+<span class="service-index">01</span>
+<h3>Web Design</h3>
+<p>Αρχιτεκτονική περιεχομένου, visual direction και responsive interfaces που διαβάζονται καθαρά και αποδίδουν premium αίσθηση.</p>
+<ul>
+<li>UI systems</li>
+<li>Landing pages</li>
+<li>Responsive flows</li>
+</ul>
+</article>
+
+<article class="service-card glass-panel" data-reveal>
+<span class="service-index">02</span>
+<h3>Branding & SEO</h3>
+<p>Positioning, tone of voice, visual συνέπεια και SEO-aware δομή ώστε η επιχείρηση να αποκτήσει καθαρή και αναγνωρίσιμη online ταυτότητα.</p>
+<ul>
+<li>Brand direction</li>
+<li>On-page SEO</li>
+<li>Content structure</li>
+</ul>
+</article>
+
+<article class="service-card glass-panel" data-reveal>
+<span class="service-index">03</span>
+<h3>Sites & E-shops</h3>
+<p>Ανάπτυξη εταιρικών websites και ηλεκτρονικών καταστημάτων με έμφαση στην ταχύτητα, στη σταθερότητα και στην καθαρή διαχείριση.</p>
+<ul>
+<li>Custom development</li>
+<li>E-commerce flows</li>
+<li>CMS integrations</li>
+</ul>
+</article>
+
+<article class="service-card glass-panel" data-reveal>
+<span class="service-index">04</span>
+<h3>Hosting</h3>
+<p>Γρήγορη και ασφαλής φιλοξενία με backups, SSL, παρακολούθηση και production περιβάλλον έτοιμο να στηρίξει ανάπτυξη.</p>
+<ul>
+<li>Managed hosting</li>
+<li>Backups & uptime</li>
+<li>Security setup</li>
+</ul>
+</article>
+
+<article class="service-card glass-panel" data-reveal>
+<span class="service-index">05</span>
+<h3>Support</h3>
+<p>Μετά το launch παραμένουμε διαθέσιμοι για updates, βελτιώσεις, troubleshooting και επεκτάσεις που κρατούν το project ενεργό.</p>
+<ul>
+<li>Maintenance</li>
+<li>Ongoing optimization</li>
+<li>Human support</li>
+</ul>
+</article>
+</div>
+</section>
+
+<section class="gateway-section section-shell" id="solutions">
+<div class="section-heading compact-heading" data-reveal>
+<p class="section-kicker">Offer Map</p>
+<h2>Οι βασικοί πυλώνες του studio, σε μια ροή που ξεκινά από την εικόνα και φτάνει μέχρι τη λειτουργία.</h2>
+</div>
+
+<a href="services.html#web-design" class="gateway-card" data-index="01">
+<div class="gateway-inner">
+<span class="gateway-num">01</span>
+<span class="gateway-title">WEB DESIGN</span>
+<div class="gateway-content">
+<span class="gateway-sub">Cinematic interfaces με καθαρή ιεραρχία και controlled ένταση</span>
+<span class="gateway-desc">Landing pages, εταιρικά sites και UI systems που μεταφέρουν εμπιστοσύνη, αποσαφηνίζουν το μήνυμα και δίνουν premium τόνο στην παρουσία σου.</span>
+</div>
+<span class="gateway-arrow">→</span>
+</div>
+</a>
+
+<a href="services.html#branding-seo" class="gateway-card" data-index="02">
+<div class="gateway-inner">
+<span class="gateway-num">02</span>
+<span class="gateway-title">BRANDING & SEO</span>
+<div class="gateway-content">
+<span class="gateway-sub">Ταυτότητα, γλώσσα και δομή που διαβάζονται σωστά</span>
+<span class="gateway-desc">Ενοποιούμε visual language, positioning και SEO foundations ώστε το brand να δείχνει πιο ώριμο και να αποκτά πιο καθαρή online κατεύθυνση.</span>
+</div>
+<span class="gateway-arrow">→</span>
+</div>
+</a>
+
+<a href="services.html#development" class="gateway-card" data-index="03">
+<div class="gateway-inner">
+<span class="gateway-num">03</span>
+<span class="gateway-title">DEVELOPMENT</span>
+<div class="gateway-content">
+<span class="gateway-sub">Custom υλοποίηση για sites και e-shops που μένουν γρήγορα</span>
+<span class="gateway-desc">Production-quality build με responsive συμπεριφορά, σύνδεση CMS ή shop systems και ιδιαίτερη προσοχή στο conversion path.</span>
+</div>
+<span class="gateway-arrow">→</span>
+</div>
+</a>
+
+<a href="services.html#hosting" class="gateway-card" data-index="04">
+<div class="gateway-inner">
+<span class="gateway-num">04</span>
+<span class="gateway-title">HOSTING</span>
+<div class="gateway-content">
+<span class="gateway-sub">Υποδομή έτοιμη για launch, σταθερότητα και ηρεμία</span>
+<span class="gateway-desc">SSL, backups, performance layers και managed περιβάλλον για websites και e-shops που πρέπει να παραμένουν διαθέσιμα και ασφαλή.</span>
+</div>
+<span class="gateway-arrow">→</span>
+</div>
+</a>
+
+<a href="services.html#support" class="gateway-card" data-index="05">
+<div class="gateway-inner">
+<span class="gateway-num">05</span>
+<span class="gateway-title">SUPPORT</span>
+<div class="gateway-content">
+<span class="gateway-sub">Συνεργασία που συνεχίζεται και μετά την παράδοση</span>
+<span class="gateway-desc">Αναβαθμίσεις, νέες σελίδες, περιεχόμενο, troubleshooting και ongoing βελτιώσεις για brands που βλέπουν το site ως εργαλείο ανάπτυξης.</span>
+</div>
+<span class="gateway-arrow">→</span>
+</div>
+</a>
+</section>
+
+<section class="section-shell content-section" id="process">
+<div class="section-heading" data-reveal>
+<p class="section-kicker">Process</p>
+<h2>Κρατάμε το production καθαρό, ώστε η αισθητική να παραμένει ακριβής και η τεχνική να μη γίνεται τριβή.</h2>
+</div>
+
+<div class="process-grid">
+<article class="process-step glass-panel" data-reveal>
+<span class="step-index">01</span>
+<h3>Discovery</h3>
+<p>Κατανοούμε το business model, τον ανταγωνισμό, τα κοινά και τα conversion goals πριν δημιουργηθεί η πρώτη οθόνη.</p>
+</article>
+<article class="process-step glass-panel" data-reveal>
+<span class="step-index">02</span>
+<h3>Direction</h3>
+<p>Ορίζουμε visual language, περιεχόμενο, page hierarchy και SEO direction ώστε όλη η εμπειρία να έχει έναν καθαρό άξονα.</p>
+</article>
+<article class="process-step glass-panel" data-reveal>
+<span class="step-index">03</span>
+<h3>Build</h3>
+<p>Περνάμε σε production-ready development με responsive behavior, επιδόσεις, analytics και σαφές QA πριν το launch.</p>
+</article>
+<article class="process-step glass-panel" data-reveal>
+<span class="step-index">04</span>
+<h3>Grow</h3>
+<p>Μετά το launch βελτιώνουμε funnels, περιεχόμενο, τεχνικές λεπτομέρειες και υποδομή ώστε το project να συνεχίσει να αποδίδει.</p>
+</article>
+</div>
+</section>
+
+<section class="section-shell content-section" id="projects">
+<div class="section-heading" data-reveal>
+<p class="section-kicker">Ενδεικτικές Κατευθύνσεις</p>
+<h2>Ενδεικτικές κατευθύνσεις έργων που μπορούμε να διαμορφώσουμε γύρω από την επιχείρησή σου.</h2>
+</div>
+
+<div class="project-grid">
+<article class="project-card glass-panel" data-reveal>
+<span class="project-type">Premium Services</span>
+<h3>Εταιρικό website για premium υπηρεσίες</h3>
+<p>Hero-first storytelling, υπηρεσίες, trust signals και lead capture flow για επιχειρήσεις που πουλάνε αξιοπιστία, ποιότητα και εμπειρία.</p>
+</article>
+<article class="project-card glass-panel" data-reveal>
+<span class="project-type">E-Commerce</span>
+<h3>E-shop με καθαρή διαδρομή προς την αγορά</h3>
+<p>Σχεδίαση προϊόντων, collection pages, editorial sections και υποδομή για campaigns, SEO και βελτιωμένο conversion.</p>
+</article>
+<article class="project-card glass-panel" data-reveal>
+<span class="project-type">Growth Landing</span>
+<h3>Landing pages για ads, launches και focused offers</h3>
+<p>Γρήγορες σελίδες με καθαρό μήνυμα, modular content και KPI-driven δομή για υπηρεσίες ή launches που απαιτούν αμεσότητα.</p>
+</article>
+</div>
+</section>
+
+<section class="section-shell support-band" id="hosting">
+<div class="support-copy" data-reveal>
+<p class="section-kicker">Hosting + Support</p>
+<h2>Ό,τι ανεβαίνει πρέπει να παραμένει γρήγορο, ασφαλές και εύκολο να εξελιχθεί.</h2>
+<p>Γι' αυτό η δουλειά μας δεν σταματά στην παράδοση. Προσφέρουμε managed φιλοξενία, τεχνική παρακολούθηση, updates και υποστήριξη ώστε το site να λειτουργεί σαν εργαλείο ανάπτυξης και όχι σαν βάρος συντήρησης.</p>
+</div>
+<div class="support-points">
+<article class="glass-panel support-card" data-reveal>
+<h3>Managed hosting</h3>
+<p>SSL, backups, uptime checks, staging και βασικές βελτιστοποιήσεις επιδόσεων για ήρεμη καθημερινή λειτουργία.</p>
+</article>
+<article class="glass-panel support-card" data-reveal>
+<h3>Post-launch support</h3>
+<p>Νέες ενότητες, refinements, maintenance και τεχνική βοήθεια όταν προκύπτουν νέες ανάγκες.</p>
+</article>
+</div>
+</section>
+
+<section class="section-shell cta-section" data-reveal>
+<p class="section-kicker">Ready to launch</p>
+<h2>Αν θέλεις website ή e-shop που να δείχνει premium και να λειτουργεί καθαρά, ας το οργανώσουμε σωστά από την αρχή.</h2>
+<div class="hero-actions centered-actions">
+<a class="button button-primary" href="contact.html">Στείλε το brief σου</a>
+<a class="button button-secondary" href="services.html">Δες τις υπηρεσίες αναλυτικά</a>
+</div>
+</section>
+</main>
+
+<footer class="site-footer">
+<div>
+<a class="brand-mark footer-brand" href="index.html">WebHostPro</a>
+<p>Design, code, hosting και υποστήριξη για brands που θέλουν σοβαρή, σύγχρονη και αξιόπιστη digital εικόνα.</p>
+</div>
+<div class="footer-links">
+<a href="services.html">Υπηρεσίες</a>
+<a href="projects.html">Έργα</a>
+<a href="contact.html">Επικοινωνία</a>
+</div>
+</footer>
 
 <script src="script.js"></script>
 </body>
