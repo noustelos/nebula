@@ -1,0 +1,260 @@
+const canvas = document.querySelector("#bg");
+
+if (!canvas || typeof THREE === "undefined") {
+	throw new Error("Missing canvas or THREE library.");
+}
+
+canvas.style.width = "100vw";
+canvas.style.height = "100vh";
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+	75,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	1000
+);
+
+const renderer = new THREE.WebGLRenderer({
+	canvas,
+	antialias: true
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setClearColor(0x222244);
+document.body.appendChild(renderer.domElement);
+
+camera.position.z = 5;
+scene.fog = new THREE.FogExp2(0x000000, 0.0015);
+
+const ambientLight = new THREE.AmbientLight(0x6f7fff, 0.35);
+const keyLight = new THREE.DirectionalLight(0x9ab6ff, 1.15);
+keyLight.position.set(20, 30, 20);
+scene.add(ambientLight, keyLight);
+
+const galaxyGeometry = new THREE.BufferGeometry();
+const starCount = 6000;
+const positions = new Float32Array(starCount * 3);
+const intensities = new Float32Array(starCount);
+const sizes = new Float32Array(starCount);
+
+for (let i = 0; i < starCount; i++) {
+	const i3 = i * 3;
+	positions[i3] = (Math.random() - 0.5) * 800;
+	positions[i3 + 1] = (Math.random() - 0.5) * 800;
+	positions[i3 + 2] = (Math.random() - 0.5) * 800;
+	intensities[i] = 0.35 + Math.random() * 0.75;
+	sizes[i] = 1.0 + Math.random() * 2.6;
+}
+
+galaxyGeometry.setAttribute(
+	"position",
+	new THREE.BufferAttribute(positions, 3)
+);
+galaxyGeometry.setAttribute(
+	"aIntensity",
+	new THREE.BufferAttribute(intensities, 1)
+);
+galaxyGeometry.setAttribute(
+	"aSize",
+	new THREE.BufferAttribute(sizes, 1)
+);
+
+const galaxyMaterial = new THREE.ShaderMaterial({
+	transparent: true,
+	depthWrite: false,
+	blending: THREE.AdditiveBlending,
+	uniforms: {
+		time: { value: 0 }
+	},
+	vertexShader: `
+	attribute float aIntensity;
+	attribute float aSize;
+	varying float vIntensity;
+
+	void main() {
+		vIntensity = aIntensity;
+		vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+		gl_PointSize = aSize * (170.0 / -mvPosition.z);
+		gl_Position = projectionMatrix * mvPosition;
+	}
+	`,
+	fragmentShader: `
+	uniform float time;
+	varying float vIntensity;
+
+	void main() {
+		vec2 p = gl_PointCoord - vec2(0.5);
+		float d = length(p);
+		if (d > 0.5) discard;
+
+		float core = smoothstep(0.2, 0.0, d);
+		float halo = smoothstep(0.5, 0.0, d) * 0.65;
+		float twinkle = 0.82 + 0.18 * sin(time * (2.2 + vIntensity * 2.4));
+		float alpha = (core + halo) * vIntensity * twinkle;
+		vec3 color = mix(vec3(0.68, 0.82, 1.0), vec3(1.0, 1.0, 1.0), vIntensity);
+
+		gl_FragColor = vec4(color, alpha);
+	}
+	`
+});
+
+const galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
+scene.add(galaxy);
+
+const nebulaVertexShader = `
+varying vec2 vUv;
+uniform float curvature;
+
+void main() {
+	vUv = uv;
+	vec3 p = position;
+	vec2 centered = uv - 0.5;
+	float d = dot(centered, centered);
+	p.z -= d * curvature;
+	gl_Position = projectionMatrix * modelViewMatrix * vec4(p,1.0);
+}
+`;
+
+const nebulaFragmentShader = `
+varying vec2 vUv;
+uniform float time;
+
+float noise(vec2 p){
+	return sin(p.x)*sin(p.y);
+}
+
+void main(){
+	vec2 uv = vUv;
+	vec2 centered = uv - 0.5;
+	uv += centered * dot(centered, centered) * 0.22;
+
+	float n =
+		noise(uv*10.0 + time*0.2) +
+		noise(uv*20.0 - time*0.3);
+
+	vec3 color =
+		vec3(0.2,0.1,0.6) +
+		n * vec3(0.3,0.2,0.8);
+
+	float edgeFade = 1.0 - smoothstep(0.58, 0.98, distance(vUv, vec2(0.5)));
+	float imaxVignette = 1.0 - smoothstep(0.45, 0.98, distance(vUv, vec2(0.5)));
+	gl_FragColor = vec4(color, (0.55 * edgeFade) + (0.16 * imaxVignette));
+}
+`;
+
+const nebulaGeometry = new THREE.PlaneGeometry(1800, 1800, 120, 120);
+const nebulaMaterial = new THREE.ShaderMaterial({
+	transparent: true,
+	uniforms: {
+		time: { value: 0 },
+		curvature: { value: 460.0 }
+	},
+	vertexShader: nebulaVertexShader,
+	fragmentShader: nebulaFragmentShader,
+	depthWrite: false,
+	side: THREE.DoubleSide,
+	blending: THREE.AdditiveBlending
+});
+
+const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+nebula.position.z = -120;
+scene.add(nebula);
+
+let targetX = 0;
+let targetY = 0;
+
+document.addEventListener("mousemove", (e) => {
+	const x = e.clientX / window.innerWidth - 0.5;
+	const y = e.clientY / window.innerHeight - 0.5;
+	targetX = x * 4;
+	targetY = -y * 4;
+});
+
+window.addEventListener("scroll", () => {
+	const t = document.body.getBoundingClientRect().top;
+	const nextZ = 5 + t * -0.01;
+	camera.position.z = Math.max(3.5, Math.min(12, nextZ));
+	galaxy.rotation.y += t * -0.0002;
+});
+
+window.addEventListener("resize", () => {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+function animate() {
+	requestAnimationFrame(animate);
+
+	nebulaMaterial.uniforms.time.value += 0.01;
+	galaxyMaterial.uniforms.time.value += 0.016;
+	galaxy.rotation.y += 0.0006;
+	galaxy.rotation.x += 0.00015;
+	nebula.rotation.z += 0.00025;
+	nebula.position.x = camera.position.x;
+	nebula.position.y = camera.position.y;
+	nebula.position.z = camera.position.z - 120;
+
+	camera.position.x += (targetX - camera.position.x) * 0.05;
+	camera.position.y += (targetY - camera.position.y) * 0.05;
+	camera.lookAt(scene.position);
+
+	renderer.render(scene, camera);
+}
+
+animate();
+
+if (window.gsap && window.ScrollTrigger) {
+	gsap.registerPlugin(ScrollTrigger);
+
+	gsap.fromTo(".badge-button",{
+		autoAlpha:0,
+	},{
+
+		scrollTrigger:{
+			trigger:".credential-section",
+			start:"top 72%",
+			once:true
+		},
+
+		autoAlpha:1,
+		stagger:0.3,
+		duration:1.2,
+		ease:"power3.out",
+		immediateRender:false
+
+	})
+}
+
+const boards = document.querySelectorAll(".matrix-bg")
+
+boards.forEach(board=>{
+
+for(let i=0;i<120;i++){
+
+const cell = document.createElement("span")
+
+cell.innerText = Math.floor(Math.random()*10)
+
+board.appendChild(cell)
+
+}
+
+})
+
+setInterval(()=>{
+
+document.querySelectorAll(".matrix-bg span")
+.forEach(el=>{
+
+if(Math.random() > .9){
+
+el.innerText = Math.floor(Math.random()*10)
+
+}
+
+})
+
+},120)

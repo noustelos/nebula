@@ -1,0 +1,258 @@
+body {
+	margin: 0;
+	overflow-x: hidden;
+	background: black;
+	font-family: Arial, Helvetica, sans-serif;
+	color: white;
+}
+
+canvas {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+}
+
+.hero {
+	position: relative;
+	z-index: 1;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 0 16px;
+}
+
+.hero-text h1 {
+	margin: 0;
+	font-size: clamp(2.4rem, 8vw, 5rem);
+	letter-spacing: 3px;
+	background: linear-gradient(90deg, #ffffff, #9ab6ff, #ffffff);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+}
+
+.hero-text p {
+	margin-top: 14px;
+	font-size: 1.3rem;
+	opacity: 0.85;
+}
+
+.credential-section{
+
+position:relative;
+z-index:2;
+min-height:120vh;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+align-items:center;
+gap:60px;
+padding:140px 24px 80px;
+perspective:1200px;
+
+}
+
+.scroll-to-experience{
+	margin:20px 0 0;
+	font-size:clamp(0.72rem, 1.4vw, 0.9rem);
+	text-transform:uppercase;
+	letter-spacing:0.14em;
+	color:rgba(255,255,255,0.75);
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	gap:10px;
+	text-shadow:0 0 18px rgba(180, 210, 255, 0.4);
+}
+
+.scroll-to-experience::after{
+	content:"↓";
+	font-size:1.4rem;
+	line-height:1;
+	color:rgba(210,230,255,0.9);
+	animation:scrollHintBounce 1.2s ease-in-out infinite;
+}
+
+.badge-row{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	gap:120px;
+	flex-wrap:wrap;
+}
+
+.badge-button{
+
+position:relative;
+
+width:225px;
+height:390px;
+
+overflow:hidden;
+
+border-radius:12px;
+
+cursor:pointer;
+
+transform:rotate(-1.2deg) translateY(0) scale(1);
+opacity:0;
+visibility:hidden;
+
+transform-style:preserve-3d;
+border:1px solid rgba(255,255,255,0.18);
+box-shadow:0 20px 36px rgba(0,0,0,0.45);
+transition:transform .45s ease, box-shadow .45s ease;
+transform-origin:50% -120px;
+animation:hangFloat 5.2s ease-in-out infinite;
+
+}
+
+.badge-row .badge-button:nth-child(1){
+	box-shadow:
+		0 22px 42px rgba(0,0,0,0.46),
+		0 0 30px rgba(44,136,255,0.28),
+		0 0 70px rgba(44,136,255,0.16);
+}
+
+.badge-row .badge-button:nth-child(2){
+	box-shadow:
+		0 22px 42px rgba(0,0,0,0.46),
+		0 0 30px rgba(255,72,72,0.28),
+		0 0 70px rgba(255,72,72,0.16);
+}
+
+.badge-row .badge-button:nth-child(2){
+	animation-duration:5.9s;
+	animation-delay:.35s;
+}
+
+.badge-button:hover{
+
+transform:translateZ(140px) scale(1.18);
+box-shadow:0 30px 70px rgba(120,170,255,0.35);
+
+}
+
+.badge-row .badge-button:nth-child(1):hover{
+	box-shadow:
+		0 30px 70px rgba(0,0,0,0.55),
+		0 0 55px rgba(64,160,255,0.72),
+		0 0 120px rgba(64,160,255,0.52);
+}
+
+.badge-row .badge-button:nth-child(2):hover{
+	box-shadow:
+		0 30px 70px rgba(0,0,0,0.55),
+		0 0 55px rgba(255,82,82,0.72),
+		0 0 120px rgba(255,82,82,0.52);
+}
+
+.badge-content{
+
+position:absolute;
+
+z-index:2;
+
+color:white;
+
+width:100%;
+height:100%;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+font-family:monospace;
+text-decoration:none;
+
+}
+
+.badge-title{
+
+font-size:52px;
+letter-spacing:3px;
+
+}
+
+.badge-label{
+
+font-size:14px;
+opacity:.8;
+letter-spacing:1px;
+
+}
+
+.matrix-bg{
+
+position:absolute;
+width:100%;
+height:100%;
+
+background:black;
+
+font-family:monospace;
+color:white;
+
+display:flex;
+flex-wrap:wrap;
+
+opacity:.2;
+filter:contrast(115%) brightness(88%) blur(.4px);
+
+}
+
+.badge-row .badge-button:nth-child(1) .matrix-bg{
+	color:#6db7ff;
+	opacity:.13;
+	text-shadow:0 0 4px rgba(109,183,255,0.28);
+}
+
+.badge-row .badge-button:nth-child(2) .matrix-bg{
+	color:#ff6b6b;
+	opacity:.13;
+	text-shadow:0 0 4px rgba(255,107,107,0.25);
+}
+
+.badge-button:hover .matrix-bg{
+	opacity:.06;
+}
+
+.matrix-bg span{
+
+width:20px;
+height:20px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:11px;
+
+animation:flip 0.6s infinite;
+
+}
+
+@keyframes flip{
+
+0%{transform:translateY(-3px)}
+50%{transform:translateY(3px)}
+100%{transform:translateY(-3px)}
+
+}
+
+@keyframes hangFloat{
+	0%{transform:rotate(-1.2deg) translateY(0) scale(1);}
+	50%{transform:rotate(1.5deg) translateY(10px) scale(1.01);}
+	100%{transform:rotate(-1.2deg) translateY(0) scale(1);}
+}
+
+@keyframes scrollHintBounce{
+	0%, 100%{transform:translateY(0); opacity:0.55;}
+	50%{transform:translateY(10px); opacity:1;}
+}
