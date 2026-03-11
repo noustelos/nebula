@@ -317,6 +317,60 @@ if (!prefersReducedMotion && !isTouchDevice) {
 const revealNodes = Array.from(document.querySelectorAll("[data-reveal], .gateway-card, .service-card, .project-card, .process-step, .detail-card, .contact-card, .faq-card"));
 revealNodes.forEach((node) => node.classList.add("reveal-ready"));
 
+const gatewayCards = Array.from(document.querySelectorAll(".gateway-card"));
+if (gatewayCards.length > 0) {
+	gatewayCards.forEach((card) => {
+		card.addEventListener("toggle", () => {
+			if (!card.open) return;
+
+			gatewayCards.forEach((otherCard) => {
+				if (otherCard !== card) {
+					otherCard.open = false;
+				}
+			});
+		});
+	});
+}
+
+const detailGrid = document.querySelector(".detail-grid");
+const detailCards = Array.from(document.querySelectorAll(".detail-card[id]"));
+const serviceFilterStrip = document.querySelector("#service-filter");
+const activeServiceName = serviceFilterStrip?.querySelector("[data-service-name]");
+
+if (detailGrid && detailCards.length > 0) {
+	const params = new URLSearchParams(window.location.search);
+	const selectedServiceId = params.get("service");
+	const selectedCard = selectedServiceId
+		? detailCards.find((card) => card.id === selectedServiceId)
+		: null;
+
+	if (selectedCard) {
+		detailGrid.classList.add("is-filtered");
+
+		detailCards.forEach((card) => {
+			const isSelected = card === selectedCard;
+			card.hidden = !isSelected;
+			card.classList.toggle("is-selected", isSelected);
+		});
+
+		if (serviceFilterStrip) {
+			serviceFilterStrip.hidden = false;
+		}
+
+		if (activeServiceName) {
+			const serviceTitle = selectedCard.querySelector("h3")?.textContent?.trim();
+			if (serviceTitle) {
+				activeServiceName.textContent = serviceTitle;
+			}
+		}
+	} else {
+		detailCards.forEach((card) => {
+			card.hidden = false;
+			card.classList.remove("is-selected");
+		});
+	}
+}
+
 if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
 	gsap.registerPlugin(ScrollTrigger);
 
