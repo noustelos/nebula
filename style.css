@@ -10,6 +10,20 @@
 	--accent: #9ed1ff;
 	--accent-strong: #e4f0ff;
 	--accent-warm: #ffc88a;
+	--accent-warm-soft: rgba(255, 200, 138, 0.82);
+	--accent-warm-glow: rgba(255, 200, 138, 0.18);
+	--panel-meta-color: rgba(255, 200, 138, 0.84);
+	--panel-title-color: #ffd4a3;
+	--panel-meta-glow: rgba(255, 200, 138, 0.12);
+	--panel-title-glow: rgba(255, 200, 138, 0.1);
+	--section-space: clamp(82px, 8vw, 108px);
+	--section-gap: clamp(18px, 2vw, 24px);
+	--section-heading-gap: 14px;
+	--section-heading-space: clamp(28px, 3vw, 40px);
+	--control-border: rgba(255, 255, 255, 0.12);
+	--control-surface: rgba(255, 255, 255, 0.03);
+	--control-surface-strong: rgba(255, 200, 138, 0.1);
+	--control-accent: rgba(255, 200, 138, 0.22);
 	--hero-shift-x: 0px;
 	--hero-shift-y: 0px;
 	--hero-fade: 1;
@@ -161,8 +175,8 @@ canvas {
 .site-nav a:hover,
 .site-nav a:focus-visible {
 	color: var(--text);
-	background: rgba(255, 255, 255, 0.03);
-	border-color: rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.04);
+	border-color: rgba(255, 200, 138, 0.12);
 	transform: translateY(-1px);
 	outline: none;
 }
@@ -174,9 +188,9 @@ canvas {
 }
 
 .site-nav .nav-cta {
-	background: rgba(153, 203, 255, 0.12);
-	border-color: rgba(158, 209, 255, 0.24);
-	color: var(--accent-strong);
+	background: linear-gradient(135deg, rgba(255, 200, 138, 0.12), rgba(158, 209, 255, 0.08));
+	border-color: rgba(255, 200, 138, 0.22);
+	color: #ffe3bf;
 }
 
 .page-shell {
@@ -244,7 +258,7 @@ canvas {
 	display: grid;
 	grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.9fr);
 	gap: clamp(28px, 4vw, 64px);
-	align-items: center;
+	align-items: start;
 }
 
 .hero-copy {
@@ -286,7 +300,7 @@ canvas {
 	margin: 0;
 	font-family: "Manrope", "Nunito Sans", sans-serif;
 	font-weight: 800;
-	line-height: 0.98;
+	line-height: 1.01;
 	letter-spacing: -0.04em;
 	text-wrap: balance;
 }
@@ -335,12 +349,12 @@ canvas {
 	min-height: 52px;
 	padding: 0 22px;
 	border-radius: 999px;
-	border: 1px solid rgba(255, 255, 255, 0.12);
+	border: 1px solid var(--control-border);
 	font-size: 0.8rem;
 	font-weight: 700;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+	transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .button:hover,
@@ -350,15 +364,22 @@ canvas {
 }
 
 .button-primary {
-	background: linear-gradient(135deg, rgba(160, 211, 255, 0.24), rgba(255, 200, 138, 0.16));
-	border-color: rgba(193, 224, 255, 0.32);
-	color: var(--accent-strong);
-	box-shadow: 0 16px 48px rgba(83, 130, 255, 0.18);
+	background: linear-gradient(135deg, rgba(255, 200, 138, 0.2), rgba(158, 209, 255, 0.16));
+	border-color: rgba(255, 200, 138, 0.24);
+	color: #fff4e6;
+	box-shadow: 0 16px 42px rgba(255, 200, 138, 0.12);
 }
 
 .button-secondary {
-	background: rgba(255, 255, 255, 0.02);
-	color: var(--text);
+	background: var(--control-surface);
+	border-color: rgba(255, 200, 138, 0.1);
+	color: rgba(245, 235, 222, 0.92);
+}
+
+.button-secondary:hover,
+.button-secondary:focus-visible {
+	background: var(--control-surface-strong);
+	border-color: var(--control-accent);
 }
 
 .hero-metrics,
@@ -444,8 +465,8 @@ canvas {
 .contact-form:hover,
 .signal-card:hover {
 	transform: translateY(-6px);
-	border-color: rgba(205, 229, 255, 0.24);
-	box-shadow: 0 34px 92px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(255, 255, 255, 0.04);
+	border-color: rgba(255, 200, 138, 0.22);
+	box-shadow: 0 34px 92px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(255, 200, 138, 0.06), 0 0 34px rgba(255, 200, 138, 0.08);
 }
 
 .hero-metrics li:hover::after,
@@ -476,14 +497,17 @@ canvas {
 .service-index,
 .step-index,
 .project-type,
-.detail-index {
+.detail-index,
+.gateway-num,
+.stage-node-label {
 	display: block;
 	margin-bottom: 10px;
 	font-size: 0.74rem;
 	font-weight: 700;
 	letter-spacing: 0.12em;
 	text-transform: uppercase;
-	color: rgba(212, 228, 255, 0.74);
+	color: var(--panel-meta-color);
+	text-shadow: 0 0 16px var(--panel-meta-glow);
 }
 
 .hero-metrics span,
@@ -497,48 +521,33 @@ canvas {
 
 .hero-side {
 	display: grid;
-	gap: 16px;
+	gap: 10px;
+	padding-top: clamp(34px, 3vw, 44px);
 }
 
 .signal-card {
 	padding: 28px;
 	min-height: 290px;
+	margin-top: 0;
 }
 
 .hero-stage {
-	padding: 22px;
-	min-height: 360px;
+	padding: 16px;
+	min-height: 350px;
 	display: grid;
-	gap: 18px;
-	background:
-		radial-gradient(circle at 50% 50%, rgba(112, 168, 255, 0.1), transparent 42%),
-		linear-gradient(180deg, rgba(15, 25, 56, 0.82), rgba(8, 14, 31, 0.74));
-}
-
-.hero-stage-label {
-	display: inline-flex;
 	align-items: center;
-	gap: 10px;
-	font-size: 0.74rem;
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	color: rgba(212, 231, 255, 0.68);
-}
-
-.hero-stage-label::before {
-	content: "";
-	width: 28px;
-	height: 1px;
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(196, 226, 255, 0.95));
+	background: transparent;
+	box-shadow: none;
+	margin-top: 0;
 }
 
 .hero-stage-core {
 	position: relative;
-	min-height: 220px;
+	min-height: 328px;
 	display: grid;
 	place-items: center;
 	overflow: hidden;
-	border-radius: 22px;
+	border-radius: 24px;
 	background:
 		radial-gradient(circle at center, rgba(160, 204, 255, 0.12), rgba(7, 14, 30, 0.08) 42%, transparent 72%),
 		linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
@@ -559,13 +568,13 @@ canvas {
 }
 
 .stage-ring-one {
-	width: 220px;
-	height: 220px;
+	width: 268px;
+	height: 268px;
 }
 
 .stage-ring-two {
-	width: 140px;
-	height: 140px;
+	width: 180px;
+	height: 180px;
 	border-style: dashed;
 	animation-direction: reverse;
 	animation-duration: 14s;
@@ -593,9 +602,9 @@ canvas {
 
 .stage-node {
 	position: relative;
-	width: min(78%, 280px);
-	padding: 22px 20px;
-	border-radius: 18px;
+	width: min(89%, 372px);
+	padding: 40px 34px;
+	border-radius: 22px;
 	text-align: center;
 	background: linear-gradient(180deg, rgba(13, 22, 48, 0.88), rgba(7, 12, 28, 0.82));
 	border: 1px solid rgba(198, 224, 255, 0.16);
@@ -612,26 +621,22 @@ canvas {
 }
 
 .stage-node-label {
-	display: block;
-	margin-bottom: 8px;
-	font-size: 0.74rem;
+	margin-bottom: 10px;
 	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: rgba(208, 227, 255, 0.66);
 }
 
 .stage-node strong {
 	display: block;
 	font-family: "Manrope", "Nunito Sans", sans-serif;
-	font-size: 1.08rem;
+	font-size: 1.34rem;
 	line-height: 1.08;
 	letter-spacing: -0.03em;
-	margin-bottom: 10px;
+	margin-bottom: 14px;
 }
 
 .stage-node p {
 	margin: 0;
-	font-size: 0.86rem;
+	font-size: 1rem;
 	color: var(--muted-soft);
 }
 
@@ -662,15 +667,25 @@ canvas {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 14px;
+	margin-top: 6px;
 }
 
 .mini-panel {
-	padding: 18px;
+	padding: 28px 22px;
+	min-height: 196px;
 	border-radius: var(--radius-md);
 }
 
 .mini-value {
-	color: var(--accent-warm);
+	margin-bottom: 14px;
+	font-size: 0.88rem;
+}
+
+.mini-panel p {
+	margin: 0;
+	font-size: 1.03rem;
+	line-height: 1.62;
+	color: var(--muted);
 }
 
 .hero-subtitle {
@@ -686,17 +701,16 @@ canvas {
 .project-grid,
 .services-grid,
 .process-grid {
-	margin-top: 48px;
+	margin-top: clamp(44px, 5vw, 56px);
 }
 
 .intro-strip {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 20px;
-	padding: 22px 28px;
+	justify-content: center;
+	padding: 30px 34px;
 	border: 1px solid rgba(255, 255, 255, 0.08);
-	border-radius: 999px;
+	border-radius: 32px;
 	background: rgba(8, 14, 28, 0.45);
 	backdrop-filter: blur(14px);
 	-webkit-backdrop-filter: blur(14px);
@@ -705,8 +719,11 @@ canvas {
 
 .intro-strip p {
 	margin: 0;
-	max-width: 54ch;
-	font-size: 1rem;
+	max-width: 62ch;
+	font-size: clamp(1.14rem, 1.6vw, 1.34rem);
+	line-height: 1.72;
+	text-align: center;
+	color: rgba(232, 240, 255, 0.84);
 }
 
 .strip-stats {
@@ -721,16 +738,16 @@ canvas {
 .pill {
 	padding: 10px 14px;
 	border-radius: 999px;
-	border: 1px solid rgba(195, 220, 255, 0.14);
-	background: rgba(255, 255, 255, 0.025);
-	color: var(--muted);
+	border: 1px solid rgba(255, 200, 138, 0.14);
+	background: rgba(255, 200, 138, 0.05);
+	color: rgba(245, 229, 208, 0.84);
 	font-size: 0.72rem;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
 }
 
 .content-section {
-	padding-top: 92px;
+	padding-top: var(--section-space);
 }
 
 .content-section::before,
@@ -762,11 +779,16 @@ canvas {
 	pointer-events: none;
 }
 
+.intro-strip + .content-section::before {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 .section-heading {
 	display: grid;
-	gap: 12px;
+	gap: var(--section-heading-gap);
 	max-width: 820px;
-	margin-bottom: 32px;
+	margin-bottom: var(--section-heading-space);
 }
 
 .section-heading h2,
@@ -774,16 +796,17 @@ canvas {
 .cta-section h2,
 .page-hero .page-intro-title {
 	font-size: clamp(1.95rem, 4vw, 3.8rem);
+	letter-spacing: -0.036em;
 }
 
 .compact-heading {
-	margin-bottom: 22px;
+	margin-bottom: clamp(22px, 2.6vw, 30px);
 }
 
 .services-grid {
 	display: grid;
 	grid-template-columns: repeat(5, minmax(0, 1fr));
-	gap: 18px;
+	gap: var(--section-gap);
 }
 
 .service-card,
@@ -793,7 +816,7 @@ canvas {
 .contact-card,
 .faq-card,
 .contact-form {
-	padding: 24px;
+	padding: 26px;
 }
 
 .service-card h3,
@@ -804,8 +827,20 @@ canvas {
 .detail-card h3,
 .faq-card h3 {
 	margin: 0 0 12px;
-	font-size: 1.08rem;
-	line-height: 1.2;
+	font-family: "Manrope", "Nunito Sans", sans-serif;
+	font-size: clamp(1.08rem, 1.35vw, 1.24rem);
+	font-weight: 700;
+	line-height: 1.12;
+	letter-spacing: -0.025em;
+}
+
+.service-card h3,
+.project-card h3,
+.process-step h3,
+.detail-card h3,
+.support-card h3 {
+	color: var(--panel-title-color);
+	text-shadow: 0 0 20px var(--panel-title-glow);
 }
 
 .service-card ul {
@@ -838,7 +873,7 @@ canvas {
 }
 
 .gateway-section {
-	padding-top: 92px;
+	padding-top: var(--section-space);
 }
 
 .gateway-card {
@@ -866,7 +901,7 @@ canvas {
 }
 
 .gateway-card[open] {
-	border-color: rgba(186, 214, 255, 0.16);
+	border-color: rgba(255, 200, 138, 0.16);
 }
 
 .gateway-card::after {
@@ -876,7 +911,7 @@ canvas {
 	top: 0;
 	width: 2px;
 	height: 100%;
-	background: rgba(180, 215, 255, 0.58);
+	background: rgba(255, 200, 138, 0.6);
 	transform: scaleY(0);
 	transform-origin: top center;
 	transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
@@ -920,7 +955,6 @@ canvas {
 .gateway-num {
 	font-size: 0.72rem;
 	letter-spacing: 0.2em;
-	color: rgba(186, 214, 255, 0.42);
 }
 
 .gateway-title {
@@ -974,10 +1008,11 @@ canvas {
 }
 
 .gateway-sub {
-	color: rgba(200, 222, 255, 0.72);
+	color: var(--panel-meta-color);
 	font-size: 0.8rem;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
+	text-shadow: 0 0 14px var(--panel-meta-glow);
 	transition-delay: 0.08s;
 }
 
@@ -1008,7 +1043,7 @@ canvas {
 
 .gateway-arrow {
 	font-size: clamp(1.4rem, 2.5vw, 2.5rem);
-	color: rgba(180, 215, 255, 0.24);
+	color: rgba(255, 200, 138, 0.24);
 	transform: translateX(-10px);
 	transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1), color 0.45s ease, opacity 0.45s ease;
 	opacity: 0.34;
@@ -1018,7 +1053,7 @@ canvas {
 .gateway-card:focus-visible .gateway-arrow,
 .gateway-card[open] .gateway-arrow {
 	transform: translateX(0) rotate(-45deg);
-	color: rgba(180, 215, 255, 0.92);
+	color: rgba(255, 214, 168, 0.94);
 	opacity: 1;
 }
 
@@ -1037,7 +1072,7 @@ canvas {
 .contact-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 18px;
+	gap: var(--section-gap);
 }
 
 .project-grid {
@@ -1047,21 +1082,21 @@ canvas {
 .support-band {
 	display: grid;
 	grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-	gap: 18px;
-	padding-top: 92px;
+	gap: var(--section-gap);
+	padding-top: var(--section-space);
 }
 
 .support-points {
 	display: grid;
-	gap: 18px;
+	gap: var(--section-gap);
 }
 
 .support-card {
-	padding: 24px;
+	padding: 26px;
 }
 
 .cta-section {
-	padding: 92px 0 0;
+	padding: var(--section-space) 0 0;
 	text-align: center;
 	max-width: 900px;
 }
@@ -1084,6 +1119,10 @@ canvas {
 	color: var(--muted-soft);
 }
 
+.site-footer > div:first-child {
+	max-width: 44ch;
+}
+
 .footer-brand {
 	display: inline-block;
 	margin-bottom: 12px;
@@ -1096,9 +1135,29 @@ canvas {
 	justify-content: flex-end;
 }
 
+.footer-links a {
+	color: rgba(235, 223, 209, 0.74);
+	transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+	color: var(--panel-title-color);
+	transform: translateY(-1px);
+	outline: none;
+}
+
+.footer-credit {
+	margin-top: 12px;
+	font-size: 0.76rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: rgba(255, 220, 184, 0.62);
+}
+
 .page-hero {
 	padding-top: 116px;
-	padding-bottom: 24px;
+	padding-bottom: 28px;
 	max-width: 940px;
 }
 
@@ -1123,7 +1182,8 @@ canvas {
 }
 
 .service-filter-strip strong {
-	color: var(--accent-strong);
+	color: var(--panel-title-color);
+	text-shadow: 0 0 16px var(--panel-title-glow);
 }
 
 .service-filter-close {
@@ -1152,12 +1212,14 @@ canvas {
 }
 
 .page-hero .page-intro-title {
-	margin-bottom: 18px;
+	margin-bottom: 20px;
 }
 
 .page-hero .page-intro {
 	max-width: 68ch;
 	margin: 0;
+	line-height: 1.72;
+	color: rgba(226, 234, 250, 0.74);
 }
 
 .detail-grid {
@@ -1313,6 +1375,9 @@ canvas {
 @media (max-width: 860px) {
 	:root {
 		--content-width: min(100vw - 32px, 1180px);
+		--section-space: 72px;
+		--section-gap: 16px;
+		--section-heading-space: 28px;
 	}
 
 	.site-header,
@@ -1339,7 +1404,7 @@ canvas {
 
 	.hero {
 		min-height: auto;
-		padding-top: 34px;
+		padding-top: 28px;
 	}
 
 	.hero::before,
@@ -1358,10 +1423,35 @@ canvas {
 
 	.hero-stage {
 		min-height: 320px;
+		margin-top: 0;
+	}
+
+	.signal-card {
+		margin-top: 0;
+	}
+
+	.hero-side {
+		gap: 8px;
+		padding-top: 0;
 	}
 
 	.intro-strip {
 		border-radius: 28px;
+		padding: 24px 24px;
+	}
+
+	.intro-strip p {
+		font-size: clamp(1.06rem, 3.6vw, 1.2rem);
+		line-height: 1.64;
+	}
+
+	.section-heading {
+		margin-bottom: 24px;
+	}
+
+	.hero-actions {
+		gap: 12px;
+		margin-top: 24px;
 	}
 
 	.gateway-summary {
@@ -1389,6 +1479,12 @@ canvas {
 }
 
 @media (max-width: 520px) {
+	:root {
+		--section-space: 62px;
+		--section-gap: 14px;
+		--section-heading-space: 22px;
+	}
+
 	.site-nav a {
 		padding: 8px 12px;
 		font-size: 0.74rem;
@@ -1406,6 +1502,20 @@ canvas {
 
 	.button {
 		width: 100%;
+		min-height: 50px;
+	}
+
+	.hero-copy h1,
+	.page-hero h1 {
+		line-height: 1.03;
+	}
+
+	.intro-strip {
+		padding: 22px 18px;
+	}
+
+	.page-hero {
+		padding-bottom: 20px;
 	}
 
 	.gateway-summary {
