@@ -336,6 +336,7 @@ const detailGrid = document.querySelector(".detail-grid");
 const detailCards = Array.from(document.querySelectorAll(".detail-card[id]"));
 const serviceFilterStrip = document.querySelector("#service-filter");
 const activeServiceName = serviceFilterStrip?.querySelector("[data-service-name]");
+const navAnchorLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
 
 if (detailGrid && detailCards.length > 0) {
 	const params = new URLSearchParams(window.location.search);
@@ -369,6 +370,39 @@ if (detailGrid && detailCards.length > 0) {
 			card.classList.remove("is-selected");
 		});
 	}
+}
+
+if (navAnchorLinks.length > 0) {
+	const navSections = navAnchorLinks
+		.map((link) => {
+			const section = document.querySelector(link.getAttribute("href"));
+			return section ? { link, section } : null;
+		})
+		.filter(Boolean);
+
+	const setActiveAnchorLink = (activeId) => {
+		navSections.forEach(({ link, section }) => {
+			link.classList.toggle("is-active", section.id === activeId);
+		});
+	};
+
+	const updateActiveAnchorLink = () => {
+		const focusLine = window.innerHeight * 0.32;
+		let currentSectionId = "";
+
+		navSections.forEach(({ section }) => {
+			const rect = section.getBoundingClientRect();
+			if (rect.top <= focusLine && rect.bottom >= focusLine) {
+				currentSectionId = section.id;
+			}
+		});
+
+		setActiveAnchorLink(currentSectionId);
+	};
+
+	window.addEventListener("scroll", updateActiveAnchorLink, { passive: true });
+	window.addEventListener("resize", updateActiveAnchorLink);
+	updateActiveAnchorLink();
 }
 
 if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {

@@ -166,7 +166,7 @@ canvas {
 	right: 14px;
 	bottom: 8px;
 	height: 1px;
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(196, 226, 255, 0.95), rgba(255, 232, 204, 0));
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 214, 168, 0.95), rgba(255, 232, 204, 0));
 	transform: scaleX(0.25);
 	opacity: 0;
 	transition: transform 0.25s ease, opacity 0.25s ease;
@@ -174,9 +174,10 @@ canvas {
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
-	color: var(--text);
-	background: rgba(255, 255, 255, 0.04);
-	border-color: rgba(255, 200, 138, 0.12);
+	color: var(--panel-title-color);
+	background: rgba(255, 200, 138, 0.06);
+	border-color: rgba(255, 200, 138, 0.18);
+	box-shadow: 0 0 18px rgba(255, 200, 138, 0.06);
 	transform: translateY(-1px);
 	outline: none;
 }
@@ -188,9 +189,21 @@ canvas {
 }
 
 .site-nav .nav-cta {
-	background: linear-gradient(135deg, rgba(255, 200, 138, 0.12), rgba(158, 209, 255, 0.08));
+	background: rgba(255, 255, 255, 0.03);
+	border-color: rgba(255, 255, 255, 0.08);
+	color: var(--muted);
+}
+
+.site-nav a.is-active {
+	color: var(--panel-title-color);
+	background: rgba(255, 200, 138, 0.08);
 	border-color: rgba(255, 200, 138, 0.22);
-	color: #ffe3bf;
+	box-shadow: 0 0 22px rgba(255, 200, 138, 0.08);
+}
+
+.site-nav a.is-active::after {
+	opacity: 1;
+	transform: scaleX(1);
 }
 
 .page-shell {
@@ -757,10 +770,11 @@ canvas {
 .page-hero::before {
 	content: "";
 	position: absolute;
-	left: 0;
+	left: 50%;
 	top: 28px;
 	width: min(280px, 42vw);
 	height: 1px;
+	transform: translateX(-50%);
 	background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(186, 214, 255, 0.9), rgba(255, 255, 255, 0));
 	opacity: 0.85;
 }
@@ -777,11 +791,6 @@ canvas {
 	background: radial-gradient(circle, rgba(120, 174, 255, 0.12), transparent 70%);
 	filter: blur(22px);
 	pointer-events: none;
-}
-
-.intro-strip + .content-section::before {
-	left: 50%;
-	transform: translateX(-50%);
 }
 
 .section-heading {
@@ -1147,12 +1156,13 @@ canvas {
 	outline: none;
 }
 
-.footer-credit {
+.site-footer .footer-credit {
 	margin-top: 12px;
 	font-size: 0.76rem;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	color: rgba(255, 220, 184, 0.62);
+	color: var(--panel-meta-color);
+	text-shadow: 0 0 14px var(--panel-meta-glow);
 }
 
 .page-hero {
